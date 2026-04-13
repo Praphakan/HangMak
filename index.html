@@ -320,72 +320,115 @@ function drawAR() {
   const { aRad, angDeg, rl, dist, suspLen, hangPt, valid } = G;
   if (!valid) return;
 
-  const groundY=H*.68, edgePad=W*.06;
-  const totalPx=W-2*edgePad;
-  const rlRatio=rl/dist, rlPx=rlRatio*totalPx;
-  const sangHPx=(totalPx-rlPx)/2;
-  const dY=sangHPx*Math.tan(aRad);
-  const hamLx=edgePad+sangHPx, hamRx=W-edgePad-sangHPx;
-  const anchLx=edgePad, anchRx=W-edgePad;
-  const anchY=groundY-dY, sagPx=(hamRx-hamLx)*.1;
-  const fs=Math.max(13, Math.round(H*.055));
+  const fs = Math.max(13, Math.round(H*.055));
+  const labelH = fs + 8;   // height of a label pill
 
+  // ── Margins: top for anchor labels, bottom for hamac sag, sides for height label
+  const padTop    = labelH + 20;      // room above anchors for sangle label
+  const padBot    = H * .18;          // room below hamac ends for sag + hint bar
+  const padLeft   = W * .14;          // room left for height dimension
+  const padRight  = W * .06;
+
+  // ── Horizontal layout based on rl/dist ratio ──
+  const plotW   = W - padLeft - padRight;
+  const rlRatio = rl / dist;
+  const rlPx    = rlRatio * plotW;
+  const sangHPx = (plotW - rlPx) / 2;
+
+  const anchLx = padLeft;
+  const anchRx = padLeft + plotW;
+  const hamLx  = padLeft + sangHPx;
+  const hamRx  = padLeft + plotW - sangHPx;
+
+  // ── Vertical layout: anchors at top area, hamac ends in middle ──
+  // We want the scene centered: anchors near top, hamac center near middle
+  const dY = sangHPx * Math.tan(aRad);   // vertical rise of sangle
+
+  // Place hamac ends so the whole scene fits with margins
+  const availH  = H - padTop - padBot;
+  // Scene height = dY (sangle rise) + sag
+  const sagFrac = 0.12;
+  const sceneH  = dY + rlPx * sagFrac;
+  const scale   = Math.min(1, availH / sceneH);
+
+  const dYpx    = dY * scale;
+  const sagPx   = rlPx * sagFrac * scale;
+
+  // Center the scene: midpoint of (anchY + hamBotY) at H/2
+  const sceneHpx = dYpx + sagPx;
+  const topY    = H/2 - sceneHpx/2;      // Y of anchors
+  const anchY   = topY;
+  const hamY    = topY + dYpx;           // Y of hamac ends
+  const hamBotY = hamY + sagPx * 2;      // lowest point of sag
+
+  // ── Draw straps ──
   function strap(ax,ay,ex,ey) {
-    c.strokeStyle='rgba(240,192,60,.15)';c.lineWidth=22;c.lineCap='round';c.setLineDash([]);
+    c.strokeStyle='rgba(240,192,60,.13)';c.lineWidth=22;c.lineCap='round';c.setLineDash([]);
     c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
     c.strokeStyle='rgba(210,155,40,.92)';c.lineWidth=4;
     c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
-    const dx=ex-ax,dy=ey-ay,len=Math.sqrt(dx*dx+dy*dy);
-    const nx=-dy/len*18,ny=dx/len*18;
-    c.strokeStyle='rgba(200,136,26,.22)';c.lineWidth=1.4;c.setLineDash([6,7]);
+    const dx=ex-ax,dy2=ey-ay,len=Math.sqrt(dx*dx+dy2*dy2);
+    const nx=-dy2/len*16,ny=dx/len*16;
+    c.strokeStyle='rgba(200,136,26,.2)';c.lineWidth=1.2;c.setLineDash([5,6]);
     c.beginPath();c.moveTo(ax+nx,ay+ny);c.lineTo(ex+nx,ey+ny);c.stroke();
     c.beginPath();c.moveTo(ax-nx,ay-ny);c.lineTo(ex-nx,ey-ny);c.stroke();
     c.setLineDash([]);
   }
-  strap(anchLx,anchY,hamLx,groundY);
-  strap(anchRx,anchY,hamRx,groundY);
+  strap(anchLx,anchY,hamLx,hamY);
+  strap(anchRx,anchY,hamRx,hamY);
 
+  // ── Anchor rings ──
   c.fillStyle='rgba(10,6,2,.85)';c.strokeStyle='rgba(200,136,26,.9)';c.lineWidth=2.5;
   [anchLx,anchRx].forEach(x=>{c.beginPath();c.arc(x,anchY,9,0,Math.PI*2);c.fill();c.stroke();});
 
+  // ── Hammock ──
+  const cx1l=hamLx+(hamRx-hamLx)*.35, cx2r=hamRx-(hamRx-hamLx)*.35;
+  const cpy=hamY+sagPx*2;
   c.strokeStyle='rgba(28,18,4,.8)';c.lineWidth=13;c.lineCap='round';
-  c.beginPath();c.moveTo(hamLx,groundY);
-  c.bezierCurveTo(hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx,groundY);
-  c.stroke();
-  c.fillStyle='rgba(55,38,10,.5)';
-  c.beginPath();c.moveTo(hamLx,groundY-3);c.lineTo(hamRx,groundY-3);
-  c.bezierCurveTo(hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamLx,groundY-3);
-  c.fill();
+  c.beginPath();c.moveTo(hamLx,hamY);c.bezierCurveTo(cx1l,cpy,cx2r,cpy,hamRx,hamY);c.stroke();
+  c.fillStyle='rgba(55,38,10,.48)';
+  c.beginPath();c.moveTo(hamLx,hamY-3);c.lineTo(hamRx,hamY-3);
+  c.bezierCurveTo(cx2r,cpy,cx1l,cpy,hamLx,hamY-3);c.fill();
   c.strokeStyle='rgba(200,158,55,.85)';c.lineWidth=4.5;
-  c.beginPath();c.moveTo(hamLx,groundY);
-  c.bezierCurveTo(hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx,groundY);
-  c.stroke();
+  c.beginPath();c.moveTo(hamLx,hamY);c.bezierCurveTo(cx1l,cpy,cx2r,cpy,hamRx,hamY);c.stroke();
 
+  // ── Ridgeline dashed ──
   c.setLineDash([10,7]);c.strokeStyle='rgba(100,150,215,.7)';c.lineWidth=2.2;
-  c.beginPath();c.moveTo(hamLx,groundY);c.lineTo(hamRx,groundY);c.stroke();
+  c.beginPath();c.moveTo(hamLx,hamY);c.lineTo(hamRx,hamY);c.stroke();
   c.setLineDash([]);
 
-  function strapLabel(ax,ay,ex,ey,txt) {
-    const mx=(ax+ex)/2,my=(ay+ey)/2;
-    const dx=ex-ax,dy=ey-ay,len=Math.sqrt(dx*dx+dy*dy);
-    const nx=-dy/len*24,ny=dx/len*24;
-    c.fillStyle='rgba(6,8,14,.84)';c.beginPath();c.roundRect(mx+nx-36,my+ny-fs*.76,72,fs+6,4);c.fill();
-    c.fillStyle='rgba(220,165,55,.95)';c.font=`600 ${fs}px 'Teko',sans-serif`;c.textAlign='center';
-    c.fillText(txt,mx+nx,my+ny+fs*.32);
+  // ── Labels: placed ABOVE anchors (not on straps) ──
+  function pill(txt, cx, cy, color) {
+    const tw = c.measureText(txt).width;
+    const pw = tw + 16, ph = labelH;
+    c.fillStyle='rgba(6,8,14,.88)';
+    c.beginPath();c.roundRect(cx-pw/2,cy-ph/2,pw,ph,4);c.fill();
+    c.fillStyle=color;c.textAlign='center';
+    c.fillText(txt, cx, cy+fs*.3);
   }
-  strapLabel(anchLx,anchY,hamLx,groundY,suspLen.toFixed(2)+'m');
-  strapLabel(anchRx,anchY,hamRx,groundY,suspLen.toFixed(2)+'m');
 
-  const rlfs=Math.max(11,Math.round(fs*.82));
-  c.fillStyle='rgba(6,8,14,.84)';c.beginPath();c.roundRect(W/2-38,groundY-rlfs-14,76,rlfs+6,4);c.fill();
-  c.fillStyle='rgba(100,150,215,.9)';c.font=`400 ${rlfs}px monospace`;c.textAlign='center';
-  c.fillText(rl.toFixed(2)+' m',W/2,groundY-14);
+  c.font=`600 ${fs}px 'Teko',sans-serif`;
 
-  c.strokeStyle='rgba(200,136,26,.5)';c.lineWidth=1.2;
-  c.beginPath();c.moveTo(anchLx+16,anchY);c.lineTo(anchLx+16,groundY);c.stroke();
-  [anchY,groundY].forEach(y=>{c.beginPath();c.moveTo(anchLx+11,y);c.lineTo(anchLx+21,y);c.stroke();});
-  c.fillStyle='rgba(200,136,26,.92)';c.font=`600 ${Math.round(fs*.95)}px 'Teko',sans-serif`;c.textAlign='left';
-  c.fillText(hangPt.toFixed(2)+'m',anchLx+26,(anchY+groundY)/2+fs*.32);
+  // Sangle labels — above each anchor, horizontally centered on strap midpoint
+  const sLabelY = anchY - labelH/2 - 6;
+  const lMidX = (anchLx + hamLx) / 2;
+  const rMidX = (anchRx + hamRx) / 2;
+  pill(suspLen.toFixed(2)+'m', lMidX, sLabelY, 'rgba(220,165,55,.95)');
+  pill(suspLen.toFixed(2)+'m', rMidX, sLabelY, 'rgba(220,165,55,.95)');
+
+  // Ridgeline label — below hamac center, between the two ends
+  const rlfs = Math.max(11, Math.round(fs*.8));
+  c.font=`400 ${rlfs}px monospace`;
+  pill(rl.toFixed(2)+' m', W/2, hamBotY + labelH/2 + 8, 'rgba(100,150,215,.9)');
+
+  // Height label — left of left anchor, vertical dimension line
+  const dimX = anchLx - 18;
+  c.strokeStyle='rgba(200,136,26,.55)';c.lineWidth=1.2;
+  c.beginPath();c.moveTo(dimX,anchY);c.lineTo(dimX,hamY);c.stroke();
+  [anchY,hamY].forEach(y=>{c.beginPath();c.moveTo(dimX-5,y);c.lineTo(dimX+5,y);c.stroke();});
+  c.font=`600 ${Math.round(fs*.9)}px 'Teko',sans-serif`;
+  c.fillStyle='rgba(200,136,26,.92)';c.textAlign='right';
+  c.fillText(hangPt.toFixed(2)+'m', dimX-8, (anchY+hamY)/2+fs*.32);
 }
 
 async function toggleCam() {
