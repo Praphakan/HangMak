@@ -1,165 +1,63 @@
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Teko:wght@500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
-body, .root {
-  background: #0e0d0a;
-  color: #d8c898;
-  font-family: 'IBM Plex Mono', monospace;
-}
-
+body, .root { background: #0e0d0a; color: #d8c898; font-family: 'IBM Plex Mono', monospace; }
 .root { padding: 1.2rem 1rem 2rem; }
-
-/* HEADER */
-.header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding-bottom: .9rem; margin-bottom: 1rem;
-  border-bottom: 1px solid #42391f;
-  gap: .5rem;
-}
-.logo {
-  font-family: 'Teko', sans-serif; font-size: 2rem; font-weight: 600;
-  letter-spacing: .06em; color: #f0c060; text-transform: uppercase; line-height: 1;
-}
+.header { display: flex; align-items: center; justify-content: space-between; padding-bottom: .9rem; margin-bottom: 1rem; border-bottom: 1px solid #42391f; gap: .5rem; }
+.logo { font-family: 'Teko', sans-serif; font-size: 2rem; font-weight: 600; letter-spacing: .06em; color: #f0c060; text-transform: uppercase; line-height: 1; }
 .logo em { color: #c8881a; font-style: normal; }
 .sub { font-size: .5rem; letter-spacing: .2em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-top: .2rem; }
-
-.cam-btn {
-  flex-shrink: 0;
-  background: #181610; border: 1px solid #42391f; border-radius: 4px;
-  padding: .5rem .8rem; color: #c8881a;
-  font-family: 'IBM Plex Mono', monospace; font-size: .6rem;
-  font-weight: 400; letter-spacing: .12em; text-transform: uppercase;
-  cursor: pointer; display: flex; align-items: center; gap: .4rem;
-  white-space: nowrap;
-}
+.cam-btn { flex-shrink: 0; background: #181610; border: 1px solid #42391f; border-radius: 4px; padding: .5rem .8rem; color: #c8881a; font-family: 'IBM Plex Mono', monospace; font-size: .6rem; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .4rem; white-space: nowrap; }
 .cam-btn.on { background: #c8881a; color: #0e0d0a; border-color: #c8881a; }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-
-/* FORM GRID */
-.form-grid {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1px; background: #302c1e;
-  border: 1px solid #42391f; border-radius: 5px; overflow: hidden;
-  margin-bottom: 1px;
-}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #302c1e; border: 1px solid #42391f; border-radius: 5px; overflow: hidden; margin-bottom: 1px; }
 .cell { background: #181610; padding: .65rem .8rem; }
-
-.lbl {
-  display: block; font-size: .5rem; letter-spacing: .18em;
-  text-transform: uppercase; color: #5a5030; font-weight: 300; margin-bottom: .35rem;
-}
-
+.lbl { display: block; font-size: .5rem; letter-spacing: .18em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-bottom: .35rem; }
 .irow { display: flex; align-items: center; gap: 5px; }
-
-input[type=number], select {
-  flex: 1; min-width: 0;
-  background: #201e16; border: 1px solid #42391f; border-radius: 3px;
-  padding: .38rem .5rem;
-  font-family: 'IBM Plex Mono', monospace; font-size: .88rem; font-weight: 500;
-  color: #f0c060; outline: none;
-  -moz-appearance: textfield;
-}
+input[type=number], select { flex: 1; min-width: 0; background: #201e16; border: 1px solid #42391f; border-radius: 3px; padding: .38rem .5rem; font-family: 'IBM Plex Mono', monospace; font-size: .88rem; font-weight: 500; color: #f0c060; outline: none; -moz-appearance: textfield; }
 input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 input:focus, select:focus { border-color: #c8881a; }
 select option { background: #181610; color: #d8c898; }
-
 .unit { font-size: .62rem; color: #5a5030; font-weight: 300; white-space: nowrap; }
-
-input[type=range] {
-  flex: 1; -webkit-appearance: none; height: 4px;
-  background: #201e16; border-radius: 2px; border: 1px solid #42391f; outline: none;
-}
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 14px; height: 14px;
-  border-radius: 50%; background: #c8881a; border: 2px solid #0e0d0a;
-}
-input[type=range]::-moz-range-thumb {
-  width: 14px; height: 14px;
-  border-radius: 50%; background: #c8881a; border: 2px solid #0e0d0a;
-}
+input[type=range] { flex: 1; -webkit-appearance: none; height: 4px; background: #201e16; border-radius: 2px; border: 1px solid #42391f; outline: none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #c8881a; border: 2px solid #0e0d0a; }
+input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #c8881a; border: 2px solid #0e0d0a; }
 .rl-disp { font-size: .75rem; font-weight: 500; color: #f0c060; white-space: nowrap; }
-
 .badge { font-size: .5rem; letter-spacing: .1em; text-transform: uppercase; padding: .15rem .45rem; border-radius: 2px; white-space: nowrap; }
-.ok  { background: rgba(58,122,42,.2); color: #6ac050; border: 1px solid rgba(58,122,42,.35); }
-.warn{ background: rgba(168,106,8,.2); color: #c89028; border: 1px solid rgba(168,106,8,.35); }
-.bad { background: rgba(152,32,32,.25);color: #e05050; border: 1px solid rgba(152,32,32,.35); }
-
-/* VIZ */
-.viz {
-  border: 1px solid #42391f; border-radius: 5px;
-  overflow: hidden; margin-bottom: 1px;
-  background: #080c14; position: relative;
-}
+.ok   { background: rgba(58,122,42,.2);  color: #6ac050; border: 1px solid rgba(58,122,42,.35); }
+.warn { background: rgba(168,106,8,.2);  color: #c89028; border: 1px solid rgba(168,106,8,.35); }
+.bad  { background: rgba(152,32,32,.25); color: #e05050; border: 1px solid rgba(152,32,32,.35); }
+.viz { border: 1px solid #42391f; border-radius: 5px; overflow: hidden; margin-bottom: 1px; background: #080c14; position: relative; }
 #cv { width: 100%; display: block; }
-
-/* CAMERA OVERLAY */
-#cam-layer {
-  display: none;
-  position: absolute; inset: 0;
-}
+#cam-layer { display: none; position: absolute; inset: 0; }
 #cam-layer.on { display: block; }
-#vid {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%; object-fit: cover;
-}
-#cv-ar {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-}
-#ar-hint {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  background: rgba(8,10,18,.85); border-top: 1px solid #42391f;
-  padding: .4rem .8rem; font-size: .55rem; color: #5a5030;
-  letter-spacing: .08em; text-transform: uppercase; text-align: center;
-}
+#vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#cv-ar { position: absolute; inset: 0; width: 100%; height: 100%; }
+#ar-hint { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(8,10,18,.85); border-top: 1px solid #42391f; padding: .4rem .8rem; font-size: .55rem; color: #5a5030; letter-spacing: .08em; text-transform: uppercase; text-align: center; }
 #ar-hint span { color: #c8881a; }
-
-/* RESULTS */
-.res {
-  display: grid; grid-template-columns: repeat(3,1fr);
-  gap: 1px; background: #302c1e;
-  border: 1px solid #42391f; border-radius: 5px; overflow: hidden;
-  margin-bottom: .8rem;
-}
+.res { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: #302c1e; border: 1px solid #42391f; border-radius: 5px; overflow: hidden; margin-bottom: .8rem; }
 .rcard { background: #181610; padding: .65rem .8rem; border-left: 3px solid #c8881a; }
 .rlabel { font-size: .48rem; letter-spacing: .14em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-bottom: .2rem; }
 .rval { font-family: 'Teko', sans-serif; font-size: 1.5rem; font-weight: 500; color: #f0c060; line-height: 1; }
 .rsub { font-size: .48rem; color: #5a5030; margin-top: .15rem; font-weight: 300; }
-
-/* TIP */
-.tip {
-  background: #181610; border: 1px solid #42391f;
-  border-left: 3px solid #c8881a; border-radius: 5px;
-  padding: .65rem .85rem; font-size: .65rem;
-  color: #9a8860; line-height: 1.85; font-weight: 300;
-}
+.tip { background: #181610; border: 1px solid #42391f; border-left: 3px solid #c8881a; border-radius: 5px; padding: .65rem .85rem; font-size: .65rem; color: #9a8860; line-height: 1.85; font-weight: 300; }
 .tip strong { color: #f0c060; font-weight: 500; }
 </style>
 
 <div class="root">
 <h2 style="position:absolute;left:-9999px">HangMak — calculateur de suspension hammock</h2>
-
 <div class="header">
-  <div>
-    <div class="logo">Hang<em>Mak</em></div>
-    <div class="sub">Calculateur de suspension</div>
-  </div>
+  <div><div class="logo">Hang<em>Mak</em></div><div class="sub">Calculateur de suspension</div></div>
   <button class="cam-btn" id="btn-cam" onclick="toggleCam()">
-    <span class="dot"></span>
-    <span id="btn-txt">Vue terrain</span>
+    <span class="dot"></span><span id="btn-txt">Vue terrain</span>
   </button>
 </div>
 
 <div class="form-grid">
   <div class="cell">
     <span class="lbl">Longueur hamac</span>
-    <div class="irow">
-      <input type="number" id="hl" value="3.35" min="1" max="15" step="0.05" oninput="calc()">
-      <span class="unit">m</span>
-    </div>
+    <div class="irow"><input type="number" id="hl" value="3.35" min="1" max="15" step="0.05" oninput="calc()"><span class="unit">m</span></div>
   </div>
   <div class="cell">
     <span class="lbl">Ridgeline — <span id="pct-lbl">83</span>%</span>
@@ -172,35 +70,22 @@ input[type=range]::-moz-range-thumb {
   </div>
   <div class="cell">
     <span class="lbl">Distance arbres</span>
-    <div class="irow">
-      <input type="number" id="dist" value="6.0" min="1" max="30" step="0.1" oninput="calc()">
-      <span class="unit">m</span>
-    </div>
+    <div class="irow"><input type="number" id="dist" value="6.0" min="1" max="30" step="0.1" oninput="calc()"><span class="unit">m</span></div>
   </div>
   <div class="cell">
     <span class="lbl">Hauteur d'assise</span>
-    <div class="irow">
-      <input type="number" id="sit" value="60" min="10" max="120" step="1" oninput="calc()">
-      <span class="unit">cm</span>
-    </div>
+    <div class="irow"><input type="number" id="sit" value="60" min="10" max="120" step="1" oninput="calc()"><span class="unit">cm</span></div>
   </div>
   <div class="cell">
     <span class="lbl">Poids total</span>
-    <div class="irow">
-      <input type="number" id="wt" value="80" min="10" max="500" step="1" oninput="calc()">
-      <span class="unit">kg</span>
-    </div>
+    <div class="irow"><input type="number" id="wt" value="80" min="10" max="500" step="1" oninput="calc()"><span class="unit">kg</span></div>
   </div>
   <div class="cell">
     <span class="lbl">Angle depuis le sol</span>
     <div class="irow" style="flex-wrap:wrap;gap:5px;">
       <select id="ang" onchange="calc()" style="flex:1;min-width:80px;">
-        <option value="15">15°</option>
-        <option value="20">20°</option>
-        <option value="25">25°</option>
-        <option value="30" selected>30° optimal</option>
-        <option value="35">35°</option>
-        <option value="45">45°</option>
+        <option value="15">15°</option><option value="20">20°</option><option value="25">25°</option>
+        <option value="30" selected>30° optimal</option><option value="35">35°</option><option value="45">45°</option>
       </select>
       <span class="badge ok" id="badge">Optimal</span>
     </div>
@@ -226,207 +111,199 @@ input[type=range]::-moz-range-thumb {
 
 <script>
 const fmt = m => m >= 1 ? m.toFixed(2)+' m' : Math.round(m*100)+' cm';
+let camOn=false, mediaStream=null, rafAR=null, tilt=null;
+let G = { valid:false, hangPt:0, suspLen:0, rl:0, dist:6, angDeg:30, aRad:Math.PI/6, sitM:.6 };
 
-let camOn = false, mediaStream = null, rafAR = null, tilt = null;
-let G = { valid: false, hangPt: 0, suspLen: 0, rl: 0, dist: 6, angDeg: 30, aRad: Math.PI/6, sitM: .6 };
+// ── SHARED: compute pixel layout from G and canvas dimensions ──
+// Returns all key pixel positions so both calc and AR use identical geometry
+function layout(W, H, groundFrac) {
+  const { dist, rl, hangPt, sitM, aRad } = G;
+  const groundY = H * groundFrac;
 
-// ─── CALCULATOR CANVAS ───────────────────────────────────────
+  // The ratio of ridgeline to total distance
+  const rlRatio  = rl / dist;
+  // Horizontal span of one sangle = ((dist-rl)/2) / dist * totalPx
+  // We use the full available width (with small edge padding)
+  const edgePad  = W * .06;
+  const totalPx  = W - 2 * edgePad;
+  const rlPx     = rlRatio * totalPx;
+  const sangHPx  = (totalPx - rlPx) / 2;   // horizontal px per sangle
+
+  // Anchor Y: above hammock-end level by sangHPx * tan(angle)
+  const dY       = sangHPx * Math.tan(aRad);
+
+  const hamLx = edgePad + sangHPx;
+  const hamRx = W - edgePad - sangHPx;
+  const anchLx = edgePad;
+  const anchRx = W - edgePad;
+
+  // For calc view: anchors and hammock ends need to fit within H
+  // We scale so anchY is never above the top margin
+  const topMargin = H * .12;
+  const anchY_raw = groundY - dY;
+  const anchY     = Math.max(topMargin, anchY_raw);
+  // If we had to clamp, scale groundY down proportionally
+  // (keeps angle exact — both dY and sangHPx scale together)
+  const scale = anchY_raw > topMargin ? 1 : (groundY - topMargin) / dY;
+  const sH    = sangHPx * scale;
+  const rlHalf = (rlPx / 2) * scale;
+
+  // Recompute with scale
+  const aHamLx = W/2 - rlHalf;
+  const aHamRx = W/2 + rlHalf;
+  const aAnchLx = W/2 - rlHalf - sH;
+  const aAnchRx = W/2 + rlHalf + sH;
+  const aAnchY  = groundY - sH * Math.tan(aRad);
+  const sitY    = groundY;
+
+  return { groundY, sitY, aHamLx, aHamRx, aAnchLx, aAnchRx, aAnchY,
+           rlHalf, sangHPx: sH, scale };
+}
+
+// ── CALCULATOR CANVAS ──
 function drawCalc() {
   const cv = document.getElementById('cv');
   const W  = cv.parentElement.clientWidth || 500;
-  const H  = Math.round(W * 0.48);
+  const H  = Math.round(W * 0.52);
   cv.width = W; cv.height = H;
-  const c = cv.getContext('2d');
+  const c  = cv.getContext('2d');
+  const { angDeg, aRad, valid } = G;
 
-  const { dist, rl, suspLen, hangPt, sitM, aRad, angDeg, valid } = G;
-
-  // sky
-  c.fillStyle = '#060a12'; c.fillRect(0, 0, W, H);
-
-  // stars
-  const stars = [[.03,.09,.7],[.08,.07,.5],[.14,.06,.6],[.2,.13,.4],[.26,.04,.7],
-    [.33,.1,.5],[.4,.07,.6],[.46,.15,.4],[.52,.05,.7],[.59,.12,.5],
-    [.65,.08,.6],[.71,.17,.4],[.77,.06,.7],[.83,.13,.5],[.9,.09,.6],[.96,.15,.4]];
-  stars.forEach(([fx,fy,op]) => {
-    c.fillStyle = `rgba(200,216,255,${op})`; c.fillRect(fx*W, fy*H, W/350, W/350);
+  // sky + stars
+  c.fillStyle = '#060a12'; c.fillRect(0,0,W,H);
+  [[.03,.09,.65],[.09,.06,.5],[.15,.12,.55],[.22,.05,.7],[.29,.14,.4],[.36,.08,.6],
+   [.43,.06,.5],[.5,.15,.45],[.57,.07,.65],[.64,.12,.5],[.71,.05,.7],[.78,.1,.55],
+   [.85,.07,.6],[.92,.13,.45],[.97,.08,.5],[.07,.5,.3],[.19,.48,.4],[.33,.52,.35],
+   [.48,.47,.4],[.62,.53,.3],[.76,.49,.4],[.91,.5,.35]]
+  .forEach(([fx,fy,op]) => {
+    c.fillStyle=`rgba(200,216,255,${op})`; c.fillRect(fx*W,fy*H,W/360,W/360);
   });
 
   // ground
-  c.fillStyle = '#0a0806'; c.fillRect(0, H*.78, W, H*.22);
-  c.strokeStyle = '#2a2408'; c.lineWidth = 1.5;
-  c.beginPath(); c.moveTo(0, H*.78); c.lineTo(W, H*.78); c.stroke();
-
-  if (!valid) {
-    c.fillStyle = '#802020'; c.font = `${Math.round(W/40)}px monospace`; c.textAlign = 'center';
-    c.fillText('— configuration invalide —', W/2, H/2);
-    return;
+  const gFrac = .78;
+  const groundY = H * gFrac;
+  c.fillStyle='#0a0806'; c.fillRect(0,groundY,W,H-groundY);
+  c.strokeStyle='#2a2408'; c.lineWidth=1.5;
+  c.beginPath(); c.moveTo(0,groundY); c.lineTo(W,groundY); c.stroke();
+  for(let x=4;x<W;x+=Math.round(W/50)){
+    const th=2+(x%5); c.fillStyle='rgba(22,32,16,.8)'; c.fillRect(x,groundY-th,2,th);
   }
 
-  // layout
-  const PAD = W * .14;
-  const groundY = H * .78;
-  const sceneH  = Math.max(hangPt * 1.4, sitM + 1.2);
-  const sc       = Math.min((W - 2*PAD) / dist, (groundY - H*.06) / sceneH);
-  const actualW  = dist * sc;
-  const lX = (W - actualW) / 2;
-  const rX = lX + actualW;
-  const mid = W / 2;
-  const toY = h => groundY - h * sc;
+  if (!valid) {
+    c.fillStyle='#802020'; c.font=`${Math.round(W/40)}px monospace`; c.textAlign='center';
+    c.fillText('— configuration invalide —',W/2,H/2); return;
+  }
 
-  const hangY = toY(hangPt);
-  const sitY  = toY(sitM);
-  const rlHalf = (rl / 2) * sc;
-  const hamL  = mid - rlHalf;
-  const hamR  = mid + rlHalf;
-  const sagPx = Math.min(rlHalf * .18, (groundY - sitY) * .7);
+  // Get shared layout
+  const L = layout(W, H, gFrac);
+  const { sitY, aHamLx:hamL, aHamRx:hamR, aAnchLx:anchLx, aAnchRx:anchRx, aAnchY:anchY, rlHalf } = L;
+  const sagPx = Math.min(rlHalf*.2,(sitY-anchY)*.08,(groundY-sitY)*.75);
   const cpY   = sitY + sagPx;
 
-  // trunks
-  c.fillStyle = '#1a1206';
-  c.fillRect(lX - 5, hangY - 20, 10, groundY - hangY + 20);
-  c.fillRect(rX - 5, hangY - 20, 10, groundY - hangY + 20);
+  // trunks — height covers from above anchor to ground
+  c.fillStyle='#1a1206';
+  c.fillRect(anchLx-4, anchY-20, 8, groundY-anchY+20);
+  c.fillRect(anchRx-4, anchY-20, 8, groundY-anchY+20);
 
-  // dashed height lines
-  c.setLineDash([4,5]); c.strokeStyle = 'rgba(74,62,24,.4)'; c.lineWidth = 1;
-  [[lX],[rX]].forEach(([x]) => { c.beginPath(); c.moveTo(x,hangY+6); c.lineTo(x,groundY); c.stroke(); });
+  // dashed height reference lines
+  c.setLineDash([4,5]); c.strokeStyle='rgba(74,62,24,.4)'; c.lineWidth=1;
+  [anchLx,anchRx].forEach(x=>{c.beginPath();c.moveTo(x,anchY+7);c.lineTo(x,groundY);c.stroke();});
   c.setLineDash([]);
 
-  // straps
-  c.strokeStyle = '#9a7830'; c.lineWidth = 3; c.lineCap = 'round';
-  c.beginPath(); c.moveTo(lX, hangY); c.lineTo(hamL, sitY); c.stroke();
-  c.beginPath(); c.moveTo(rX, hangY); c.lineTo(hamR, sitY); c.stroke();
+  // straps — from anchor to hammock end, angle is exact by construction
+  c.strokeStyle='#9a7830'; c.lineWidth=3; c.lineCap='round';
+  c.beginPath(); c.moveTo(anchLx,anchY); c.lineTo(hamL,sitY); c.stroke();
+  c.beginPath(); c.moveTo(anchRx,anchY); c.lineTo(hamR,sitY); c.stroke();
 
   // hammock shadow
-  c.strokeStyle = '#2a1c06'; c.lineWidth = 10;
-  c.beginPath(); c.moveTo(hamL,sitY); c.bezierCurveTo(hamL+rlHalf*.4,cpY+6,hamR-rlHalf*.4,cpY+6,hamR,sitY); c.stroke();
+  c.strokeStyle='#2a1c06'; c.lineWidth=10;
+  c.beginPath(); c.moveTo(hamL,sitY); c.bezierCurveTo(hamL+rlHalf*.4,cpY+5,hamR-rlHalf*.4,cpY+5,hamR,sitY); c.stroke();
   // hammock body
-  c.fillStyle = '#4a3210';
+  c.fillStyle='#4a3210';
   c.beginPath(); c.moveTo(hamL,sitY-4); c.lineTo(hamR,sitY-4);
   c.bezierCurveTo(hamR-rlHalf*.38,cpY,hamL+rlHalf*.38,cpY,hamL,sitY-4); c.fill();
   // hammock rim
-  c.strokeStyle = '#c8a050'; c.lineWidth = 3.5;
+  c.strokeStyle='#c8a050'; c.lineWidth=3.5;
   c.beginPath(); c.moveTo(hamL,sitY); c.bezierCurveTo(hamL+rlHalf*.4,cpY,hamR-rlHalf*.4,cpY,hamR,sitY); c.stroke();
-
-  // ridgeline
-  c.setLineDash([7,5]); c.strokeStyle = 'rgba(106,159,216,.85)'; c.lineWidth = 1.8;
+  // ridgeline dashed
+  c.setLineDash([7,5]); c.strokeStyle='rgba(106,159,216,.85)'; c.lineWidth=1.8;
   c.beginPath(); c.moveTo(hamL,sitY); c.lineTo(hamR,sitY); c.stroke();
   c.setLineDash([]);
 
   // anchor rings
   c.fillStyle='#0e0a04'; c.strokeStyle='#c8881a'; c.lineWidth=2;
-  [lX,rX].forEach(x=>{ c.beginPath();c.arc(x,hangY,5.5,0,Math.PI*2);c.fill();c.stroke(); });
+  [anchLx,anchRx].forEach(x=>{c.beginPath();c.arc(x,anchY,5.5,0,Math.PI*2);c.fill();c.stroke();});
 
   const fs = Math.max(9, Math.round(W/62));
+  const mid = W/2;
 
   // — hang height badge (left) —
-  const hbx = lX - Math.round(W*.1);
-  const hby = (groundY + hangY) / 2;
+  const hbx = anchLx - Math.round(W*.1);
+  const hby = (groundY + anchY) / 2;
+  const br  = Math.round(W*.038);
   c.strokeStyle='rgba(200,136,26,.4)'; c.lineWidth=.8;
-  c.beginPath();c.moveTo(lX-6,groundY);c.lineTo(hbx+20,groundY);c.stroke();
-  c.beginPath();c.moveTo(lX-6,hangY);c.lineTo(hbx+20,hangY);c.stroke();
+  c.beginPath();c.moveTo(anchLx-6,groundY);c.lineTo(hbx+br+4,groundY);c.stroke();
+  c.beginPath();c.moveTo(anchLx-6,anchY);c.lineTo(hbx+br+4,anchY);c.stroke();
   c.strokeStyle='#c8881a'; c.lineWidth=1;
-  c.beginPath();c.moveTo(hbx+20,groundY);c.lineTo(hbx+20,hangY);c.stroke();
-  [groundY,hangY].forEach(y=>{c.beginPath();c.moveTo(hbx+15,y);c.lineTo(hbx+25,y);c.stroke();});
-  c.fillStyle='#c8881a'; c.beginPath();c.arc(hbx,hby,Math.round(W*.038),0,Math.PI*2);c.fill();
+  c.beginPath();c.moveTo(hbx+br+4,groundY);c.lineTo(hbx+br+4,anchY);c.stroke();
+  [groundY,anchY].forEach(y=>{c.beginPath();c.moveTo(hbx+br,y);c.lineTo(hbx+br+8,y);c.stroke();});
+  c.fillStyle='#c8881a'; c.beginPath();c.arc(hbx,hby,br,0,Math.PI*2);c.fill();
   c.fillStyle='#1a0e04'; c.font=`600 ${Math.round(fs*1.05)}px 'Teko',sans-serif`; c.textAlign='center';
-  c.fillText(hangPt.toFixed(2), hbx, hby+2);
-  c.font=`300 ${Math.round(fs*.55)}px monospace`; c.fillText('m', hbx, hby+fs);
+  c.fillText(G.hangPt.toFixed(2),hbx,hby+2);
+  c.font=`300 ${Math.round(fs*.55)}px monospace`; c.fillText('m',hbx,hby+fs);
 
-  // — ridgeline label —
+  // — ridgeline label above hammock —
   const rly = sitY - 16;
   c.strokeStyle='rgba(106,159,216,.5)'; c.lineWidth=.8;
   c.beginPath();c.moveTo(hamL,rly);c.lineTo(hamR,rly);c.stroke();
   [hamL,hamR].forEach(x=>{c.beginPath();c.moveTo(x,rly-4);c.lineTo(x,rly+4);c.stroke();});
   c.fillStyle='#141820'; c.fillRect(mid-30,rly-10,60,14);
   c.fillStyle='#6a9fd8'; c.font=`400 ${Math.round(fs*.78)}px monospace`; c.textAlign='center';
-  c.fillText(rl.toFixed(2)+' m', mid, rly);
+  c.fillText(G.rl.toFixed(2)+' m',mid,rly);
 
   // — sangle badge (right) —
-  const sbx = rX + Math.round(W*.1);
-  const sby = (hangY + sitY) / 2;
+  const sbx = anchRx + Math.round(W*.1);
+  const sby = (anchY + sitY) / 2;
+  const sr  = Math.round(W*.036);
   c.setLineDash([2,3]);c.strokeStyle='rgba(90,78,32,.7)';c.lineWidth=.8;
-  c.beginPath();c.moveTo(sbx-18,sby);c.lineTo((rX+hamR)/2,sby);c.stroke();c.setLineDash([]);
-  c.fillStyle='#201e10'; c.beginPath();c.arc(sbx,sby,Math.round(W*.036),0,Math.PI*2);c.fill();
-  c.strokeStyle='#4a4220';c.lineWidth=.8;c.beginPath();c.arc(sbx,sby,Math.round(W*.036),0,Math.PI*2);c.stroke();
+  c.beginPath();c.moveTo(sbx-sr-4,sby);c.lineTo((anchRx+hamR)/2,sby);c.stroke();c.setLineDash([]);
+  c.fillStyle='#201e10'; c.beginPath();c.arc(sbx,sby,sr,0,Math.PI*2);c.fill();
+  c.strokeStyle='#4a4220';c.lineWidth=.8;c.beginPath();c.arc(sbx,sby,sr,0,Math.PI*2);c.stroke();
   c.fillStyle='#d0b860'; c.font=`500 ${Math.round(fs*.95)}px 'Teko',sans-serif`; c.textAlign='center';
-  c.fillText(suspLen.toFixed(2), sbx, sby+2);
-  c.font=`300 ${Math.round(fs*.52)}px monospace`; c.fillStyle='#7a6a30';
-  c.fillText('m', sbx, sby+fs*.85);
-
-  // — angle diagram bottom-right, small, correct orientation —
-  const dSz = Math.min(50, W*.09);
-  const ox = rX + Math.round(W*.042);
-  const oy = groundY - 10;
-  // background
-  c.fillStyle='rgba(6,8,14,.9)';
-  c.beginPath();c.roundRect(ox-4,oy-dSz-6,dSz+12,dSz+10,4);c.fill();
-  // horizontal (ground) → right
-  c.strokeStyle='rgba(90,80,48,.85)';c.lineWidth=1.5;c.lineCap='round';c.setLineDash([]);
-  c.beginPath();c.moveTo(ox,oy);c.lineTo(ox+dSz,oy);c.stroke();
-  c.beginPath();c.moveTo(ox,oy-4);c.lineTo(ox,oy+4);c.stroke();
-  // sangle → up-right at exact angle
-  const sl=dSz*.86;
-  const ex=ox+sl*Math.cos(aRad), ey=oy-sl*Math.sin(aRad);
-  c.strokeStyle='rgba(200,136,26,.9)';c.lineWidth=2;
-  c.beginPath();c.moveTo(ox,oy);c.lineTo(ex,ey);c.stroke();
-  // arc
-  const ar=dSz*.28;
-  c.strokeStyle='rgba(200,136,26,.85)';c.lineWidth=1.4;
-  c.beginPath();c.arc(ox,oy,ar,0,-aRad,true);c.stroke();
-  // label
-  const ba=-aRad/2, lr=ar+10;
-  c.fillStyle='#c8881a'; c.font=`600 ${Math.round(dSz*.28)}px 'Teko',sans-serif`; c.textAlign='center';
-  c.fillText(angDeg+'°', ox+lr*Math.cos(ba), oy+lr*Math.sin(ba)+3);
+  c.fillText(G.suspLen.toFixed(2),sbx,sby+2);
+  c.fillStyle='#7a6a30'; c.font=`300 ${Math.round(fs*.52)}px monospace`;
+  c.fillText('m',sbx,sby+fs*.85);
 }
 
-// ─── AR CAMERA CANVAS ────────────────────────────────────────
+// ── AR CAMERA CANVAS ──
 function drawAR() {
   const layer = document.getElementById('cam-layer');
-  const W = layer.clientWidth || 500;
-  const H = layer.clientHeight || 240;
+  const W = layer.clientWidth||500, H = layer.clientHeight||240;
   const cv = document.getElementById('cv-ar');
-  cv.width = W; cv.height = H;
+  cv.width=W; cv.height=H;
   const c = cv.getContext('2d');
-  c.clearRect(0, 0, W, H);
+  c.clearRect(0,0,W,H);
 
   const { aRad, angDeg, rl, dist, suspLen, hangPt } = G;
+  const groundY  = H * .68;
+  const edgePad  = W * .06;
+  const totalPx  = W - 2*edgePad;
+  const rlRatio  = rl / dist;
+  const rlPx     = rlRatio * totalPx;
+  const sangHPx  = (totalPx - rlPx) / 2;
+  const dY       = sangHPx * Math.tan(aRad);
+  const hamLx    = edgePad + sangHPx;
+  const hamRx    = W - edgePad - sangHPx;
+  const anchLx   = edgePad;
+  const anchRx   = W - edgePad;
+  const anchY    = groundY - dY;
+  const sagPx    = (hamRx-hamLx)*.1;
 
-  // — Geometry: place anchors and hammock ends with exact angle —
-  // The sangle horizontal span = (dist-rl)/2
-  // We pick a reference pixel width for one sangle and scale from there
-  // Hammock ends at a "ground" line, anchors above by tan(angle)*horizPx
-
-  const groundY = H * .68;
-  const edgePad = W * .06;
-
-  // rlRatio tells us how much of the total dist is ridgeline
-  const rlRatio = rl / dist; // e.g. 2.78/6 = 0.46
-  // Total usable width = W - 2*edgePad
-  // Ridgeline in px = rlRatio * totalPx
-  const totalPx = W - 2 * edgePad;
-  const rlPx    = rlRatio * totalPx;
-  const sangHPx = (totalPx - rlPx) / 2; // horizontal px per sangle
-
-  // Hammock ends
-  const hamLx = edgePad + sangHPx;
-  const hamRx = W - edgePad - sangHPx;
-
-  // Anchors: above hammock ends by sangHPx*tan(angle)
-  const dY = sangHPx * Math.tan(aRad);
-  const anchLx = edgePad;
-  const anchRx = W - edgePad;
-  const anchY  = groundY - dY;
-
-  // sag
-  const sagPx = (hamRx - hamLx) * .1;
-
-  // — left sangle —
   function strap(ax,ay,ex,ey) {
     c.strokeStyle='rgba(240,192,60,.15)';c.lineWidth=20;c.lineCap='round';c.setLineDash([]);
     c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
     c.strokeStyle='rgba(210,155,40,.92)';c.lineWidth=3.5;
     c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
-    // parallel guides
     const dx=ex-ax,dy=ey-ay,len=Math.sqrt(dx*dx+dy*dy);
     const nx=-dy/len*16,ny=dx/len*16;
     c.strokeStyle='rgba(200,136,26,.22)';c.lineWidth=1.2;c.setLineDash([5,6]);
@@ -434,14 +311,12 @@ function drawAR() {
     c.beginPath();c.moveTo(ax-nx,ay-ny);c.lineTo(ex-nx,ey-ny);c.stroke();
     c.setLineDash([]);
   }
-  strap(anchLx, anchY, hamLx, groundY);
-  strap(anchRx, anchY, hamRx, groundY);
+  strap(anchLx,anchY,hamLx,groundY);
+  strap(anchRx,anchY,hamRx,groundY);
 
-  // — anchor rings —
   c.fillStyle='rgba(10,6,2,.85)';c.strokeStyle='rgba(200,136,26,.9)';c.lineWidth=2.5;
-  [anchLx, anchRx].forEach(x=>{c.beginPath();c.arc(x,anchY,8,0,Math.PI*2);c.fill();c.stroke();});
+  [anchLx,anchRx].forEach(x=>{c.beginPath();c.arc(x,anchY,8,0,Math.PI*2);c.fill();c.stroke();});
 
-  // — hammock arc —
   c.strokeStyle='rgba(28,18,4,.8)';c.lineWidth=12;c.lineCap='round';
   c.beginPath();c.moveTo(hamLx,groundY);c.bezierCurveTo(hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx,groundY);c.stroke();
   c.fillStyle='rgba(55,38,10,.5)';
@@ -450,67 +325,37 @@ function drawAR() {
   c.strokeStyle='rgba(200,158,55,.85)';c.lineWidth=4;
   c.beginPath();c.moveTo(hamLx,groundY);c.bezierCurveTo(hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx,groundY);c.stroke();
 
-  // — ridgeline dashed —
   c.setLineDash([9,6]);c.strokeStyle='rgba(100,150,215,.7)';c.lineWidth=2;
   c.beginPath();c.moveTo(hamLx,groundY);c.lineTo(hamRx,groundY);c.stroke();c.setLineDash([]);
 
-  const fs = Math.max(11, Math.round(H*.05));
+  const fs = Math.max(11,Math.round(H*.05));
 
-  // — sangle length labels (on each strap) —
   function strapLabel(ax,ay,ex,ey,txt) {
-    const mx=(ax+ex)/2, my=(ay+ey)/2;
+    const mx=(ax+ex)/2,my=(ay+ey)/2;
     const dx=ex-ax,dy=ey-ay,len=Math.sqrt(dx*dx+dy*dy);
     const nx=-dy/len*20,ny=dx/len*20;
-    c.fillStyle='rgba(6,8,14,.8)'; c.beginPath();
-    c.roundRect(mx+nx-30,my+ny-fs*.72,60,fs+4,3);c.fill();
+    c.fillStyle='rgba(6,8,14,.8)';c.beginPath();c.roundRect(mx+nx-30,my+ny-fs*.72,60,fs+4,3);c.fill();
     c.fillStyle='rgba(220,165,55,.95)';c.font=`600 ${fs}px 'Teko',sans-serif`;c.textAlign='center';
     c.fillText(txt,mx+nx,my+ny+fs*.3);
   }
   strapLabel(anchLx,anchY,hamLx,groundY,suspLen.toFixed(2)+'m');
   strapLabel(anchRx,anchY,hamRx,groundY,suspLen.toFixed(2)+'m');
 
-  // — ridgeline label —
   c.fillStyle='rgba(6,8,14,.8)';c.beginPath();c.roundRect(W/2-34,groundY-fs-10,68,fs+4,3);c.fill();
   c.fillStyle='rgba(100,150,215,.9)';c.font=`400 ${Math.round(fs*.8)}px monospace`;c.textAlign='center';
-  c.fillText(rl.toFixed(2)+' m', W/2, groundY-12);
+  c.fillText(rl.toFixed(2)+' m',W/2,groundY-12);
 
-  // — height dimension (left edge) —
   c.strokeStyle='rgba(200,136,26,.5)';c.lineWidth=1;
   c.beginPath();c.moveTo(anchLx+14,anchY);c.lineTo(anchLx+14,groundY);c.stroke();
   [anchY,groundY].forEach(y=>{c.beginPath();c.moveTo(anchLx+10,y);c.lineTo(anchLx+18,y);c.stroke();});
   c.fillStyle='rgba(200,136,26,.92)';c.font=`600 ${Math.round(fs*.9)}px 'Teko',sans-serif`;c.textAlign='left';
-  c.fillText(hangPt.toFixed(2)+'m', anchLx+22, (anchY+groundY)/2+fs*.3);
+  c.fillText(hangPt.toFixed(2)+'m',anchLx+22,(anchY+groundY)/2+fs*.3);
 
-  // — angle diagram: bottom-right, small, origin bottom-left, ground→right, strap→up-right —
-  const dSz=Math.min(56,W*.11);
-  const ox=W-dSz-16, oy=H-44;
-  c.fillStyle='rgba(6,8,14,.92)'; c.beginPath();c.roundRect(ox-5,oy-dSz-6,dSz+14,dSz+10,5);c.fill();
-  c.strokeStyle='rgba(60,50,24,.6)';c.lineWidth=1;c.beginPath();c.roundRect(ox-5,oy-dSz-6,dSz+14,dSz+10,5);c.stroke();
-  // ground →right
-  c.strokeStyle='rgba(90,80,48,.9)';c.lineWidth=1.5;c.lineCap='round';c.setLineDash([]);
-  c.beginPath();c.moveTo(ox,oy);c.lineTo(ox+dSz,oy);c.stroke();
-  c.beginPath();c.moveTo(ox,oy-4);c.lineTo(ox,oy+4);c.stroke();
-  // strap →up-right at exact angle
-  const sl2=dSz*.85;
-  const ex2=ox+sl2*Math.cos(aRad),ey2=oy-sl2*Math.sin(aRad);
-  c.strokeStyle='rgba(200,136,26,.92)';c.lineWidth=2;
-  c.beginPath();c.moveTo(ox,oy);c.lineTo(ex2,ey2);c.stroke();
-  const ar2=dSz*.26;
-  c.strokeStyle='rgba(200,136,26,.85)';c.lineWidth=1.4;
-  c.beginPath();c.arc(ox,oy,ar2,0,-aRad,true);c.stroke();
-  const ba2=-aRad/2,lr2=ar2+11;
-  c.fillStyle='#c8881a';c.font=`600 ${Math.round(dSz*.27)}px 'Teko',sans-serif`;c.textAlign='center';
-  c.fillText(angDeg+'°',ox+lr2*Math.cos(ba2),oy+lr2*Math.sin(ba2)+3);
-
-  // — gyro feedback —
-  if (tilt !== null) {
-    const diff = Math.abs(tilt - angDeg);
-    const col  = diff<=3 ? '#50a838' : diff<=8 ? '#c8881a' : '#e05050';
-    const msg  = diff<=3 ? `OK — ${tilt}°`
-                 : tilt < angDeg ? `Inclinez + ↑ (${tilt}° / ${angDeg}°)`
-                                 : `Inclinez - ↓ (${tilt}° / ${angDeg}°)`;
-    c.fillStyle=`${col}22`;
-    c.beginPath();c.roundRect(W/2-110,6,220,Math.round(H*.07)+4,4);c.fill();
+  if (tilt!==null) {
+    const diff=Math.abs(tilt-angDeg);
+    const col=diff<=3?'#50a838':diff<=8?'#c8881a':'#e05050';
+    const msg=diff<=3?`OK — ${tilt}°`:tilt<angDeg?`Inclinez + ↑ (${tilt}° / ${angDeg}°)`:`Inclinez - ↓ (${tilt}° / ${angDeg}°)`;
+    c.fillStyle=`${col}22`;c.beginPath();c.roundRect(W/2-110,6,220,Math.round(H*.07)+4,4);c.fill();
     c.fillStyle=col;c.font=`600 ${Math.round(H*.05)}px 'Teko',sans-serif`;c.textAlign='center';
     c.fillText(msg,W/2,Math.round(H*.07)+2);
     document.getElementById('gyro-txt').textContent=`${tilt}° / ${angDeg}°`;
@@ -518,97 +363,84 @@ function drawAR() {
   }
 }
 
-// ─── CAMERA TOGGLE ───────────────────────────────────────────
 async function toggleCam() {
   if (!camOn) {
     try {
-      mediaStream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: 'environment' } }, audio: false
-      });
+      mediaStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false});
       const vid = document.getElementById('vid');
       vid.srcObject = mediaStream;
       await vid.play();
-
       document.getElementById('cam-layer').classList.add('on');
       document.getElementById('btn-cam').classList.add('on');
-      document.getElementById('btn-txt').textContent = 'Vue calcul';
-      camOn = true;
-      initGyro();
-      (function loop(){ drawAR(); rafAR = requestAnimationFrame(loop); })();
-    } catch(e) {
-      alert('Caméra non disponible — ' + e.message);
-    }
+      document.getElementById('btn-txt').textContent='Vue calcul';
+      camOn=true; initGyro();
+      (function loop(){drawAR();rafAR=requestAnimationFrame(loop);})();
+    } catch(e) { alert('Caméra non disponible — '+e.message); }
   } else {
-    if (rafAR) { cancelAnimationFrame(rafAR); rafAR = null; }
-    if (mediaStream) { mediaStream.getTracks().forEach(t => t.stop()); mediaStream = null; }
+    if(rafAR){cancelAnimationFrame(rafAR);rafAR=null;}
+    if(mediaStream){mediaStream.getTracks().forEach(t=>t.stop());mediaStream=null;}
     document.getElementById('cam-layer').classList.remove('on');
     document.getElementById('btn-cam').classList.remove('on');
-    document.getElementById('btn-txt').textContent = 'Vue terrain';
-    camOn = false;
-    drawCalc();
+    document.getElementById('btn-txt').textContent='Vue terrain';
+    camOn=false; drawCalc();
   }
 }
 
 function initGyro() {
-  const listen = () => window.addEventListener('deviceorientation', e => {
-    if (e.beta !== null) tilt = Math.round(Math.max(0, Math.min(90, 90 - Math.abs(e.beta))));
+  const listen=()=>window.addEventListener('deviceorientation',e=>{
+    if(e.beta!==null) tilt=Math.round(Math.max(0,Math.min(90,90-Math.abs(e.beta))));
   });
-  if (typeof DeviceOrientationEvent !== 'undefined' &&
-      typeof DeviceOrientationEvent.requestPermission === 'function') {
-    DeviceOrientationEvent.requestPermission()
-      .then(s => { if (s === 'granted') listen(); })
-      .catch(() => {});
-  } else { listen(); }
+  if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
+    DeviceOrientationEvent.requestPermission().then(s=>{if(s==='granted')listen();}).catch(()=>{});
+  } else {listen();}
 }
 
-// ─── CALC ────────────────────────────────────────────────────
 function calc() {
-  const hl   = parseFloat(document.getElementById('hl').value)   || 3.35;
-  const dist = parseFloat(document.getElementById('dist').value) || 6;
-  const sit  = (parseFloat(document.getElementById('sit').value) || 60) / 100;
-  const ang  = parseFloat(document.getElementById('ang').value)  || 30;
-  const pct  = parseFloat(document.getElementById('pct').value)  || 83;
-  const rl   = hl * (pct / 100);
-  const aRad = ang * Math.PI / 180;
-  const valid = dist > rl + 0.05;
+  const hl   = parseFloat(document.getElementById('hl').value)||3.35;
+  const dist = parseFloat(document.getElementById('dist').value)||6;
+  const sit  = (parseFloat(document.getElementById('sit').value)||60)/100;
+  const ang  = parseFloat(document.getElementById('ang').value)||30;
+  const pct  = parseFloat(document.getElementById('pct').value)||83;
+  const rl   = hl*(pct/100);
+  const aRad = ang*Math.PI/180;
+  const valid = dist>rl+0.05;
 
-  document.getElementById('pct-lbl').textContent = pct;
-  document.getElementById('rl-m').textContent    = rl.toFixed(2) + ' m';
-  document.getElementById('r-rl').textContent    = fmt(rl);
-  document.getElementById('r-rl-s').textContent  = pct + '% hamac';
+  document.getElementById('pct-lbl').textContent=pct;
+  document.getElementById('rl-m').textContent=rl.toFixed(2)+' m';
+  document.getElementById('r-rl').textContent=fmt(rl);
+  document.getElementById('r-rl-s').textContent=pct+'% hamac';
 
-  if (!valid) {
-    document.getElementById('r-h').textContent  = '—';
-    document.getElementById('r-s').textContent  = '—';
-    document.getElementById('tip').innerHTML = `<strong>Erreur :</strong> ridgeline (${rl.toFixed(2)} m) > distance arbres.`;
-    G = { ...G, valid, dist, rl, angDeg: ang, aRad, sitM: sit };
-    if (!camOn) drawCalc();
-    return;
+  if(!valid){
+    document.getElementById('r-h').textContent='—';
+    document.getElementById('r-s').textContent='—';
+    document.getElementById('tip').innerHTML=`<strong>Erreur :</strong> ridgeline (${rl.toFixed(2)} m) > distance arbres.`;
+    G={...G,valid,dist,rl,angDeg:ang,aRad,sitM:sit};
+    if(!camOn)drawCalc(); return;
   }
 
-  const hangPt  = sit + (dist / 2) * Math.tan(aRad);
-  const suspLen = ((dist - rl) / 2) / Math.cos(aRad);
-  G = { valid, hangPt, suspLen, rl, dist, angDeg: ang, aRad, sitM: sit };
+  const hangPt  = sit+(dist/2)*Math.tan(aRad);
+  const suspLen = ((dist-rl)/2)/Math.cos(aRad);
+  G={valid,hangPt,suspLen,rl,dist,angDeg:ang,aRad,sitM:sit};
 
-  document.getElementById('r-h').textContent = fmt(hangPt);
-  document.getElementById('r-s').textContent = fmt(suspLen);
+  document.getElementById('r-h').textContent=fmt(hangPt);
+  document.getElementById('r-s').textContent=fmt(suspLen);
 
-  const b = document.getElementById('badge');
-  if      (ang === 30) { b.textContent = 'Optimal';  b.className = 'badge ok'; }
-  else if (ang <= 20)  { b.textContent = 'Danger';   b.className = 'badge bad'; }
-  else if (ang >= 40)  { b.textContent = 'Détendu';  b.className = 'badge warn'; }
-  else                 { b.textContent = 'Correct';  b.className = 'badge ok'; }
+  const b=document.getElementById('badge');
+  if(ang===30){b.textContent='Optimal';b.className='badge ok';}
+  else if(ang<=20){b.textContent='Danger';b.className='badge bad';}
+  else if(ang>=40){b.textContent='Détendu';b.className='badge warn';}
+  else{b.textContent='Correct';b.className='badge ok';}
 
-  let tip = '';
-  if      (ang <= 20) tip = `<strong>Danger :</strong> tension très élevée à ${ang}°. Préférez 30°.`;
-  else if (ang === 30) tip = `Sangles à <strong>${fmt(hangPt)}</strong> sur chaque arbre. <strong>${fmt(suspLen)}</strong> par sangle. Dormez en diagonale.`;
-  else if (hangPt > 3) tip = `Ancrage à <strong>${fmt(hangPt)}</strong> — hauteur importante. Réduisez l'angle.`;
-  else                 tip = `Ancrage <strong>${fmt(hangPt)}</strong> · sangle <strong>${fmt(suspLen)}</strong> par côté.`;
-  document.getElementById('tip').innerHTML = tip;
+  let tip='';
+  if(ang<=20) tip=`<strong>Danger :</strong> tension très élevée à ${ang}°. Préférez 30°.`;
+  else if(ang===30) tip=`Sangles à <strong>${fmt(hangPt)}</strong> sur chaque arbre. <strong>${fmt(suspLen)}</strong> par sangle. Dormez en diagonale.`;
+  else if(hangPt>3) tip=`Ancrage à <strong>${fmt(hangPt)}</strong> — hauteur importante. Réduisez l'angle.`;
+  else tip=`Ancrage <strong>${fmt(hangPt)}</strong> · sangle <strong>${fmt(suspLen)}</strong> par côté.`;
+  document.getElementById('tip').innerHTML=tip;
 
-  if (!camOn) drawCalc();
+  if(!camOn)drawCalc();
 }
 
-window.addEventListener('resize', () => { if (!camOn) drawCalc(); });
+window.addEventListener('resize',()=>{if(!camOn)drawCalc();});
 calc();
 </script>
