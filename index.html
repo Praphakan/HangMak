@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>HangMak — Vérificateur d'angle</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; background: #060a12; overflow: hidden; font-family: 'IBM Plex Mono', monospace; }
+
+#video {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: 0; transition: opacity .4s;
+}
+#video.active { opacity: 1; }
+
+#overlay {
+  position: fixed; inset: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+#ui {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: rgba(8,10,18,0.88);
+  border-top: 1px solid #42391f;
+  padding: 1rem 1.2rem 1.4rem;
+  display: flex; flex-direction: column; gap: .7rem;
+}
+
+.logo { font-size: 1.4rem; font-weight: 600; letter-spacing: .06em; color: #f0c060; text-transform: uppercase; line-height: 1; }
+.logo em { color: #c8881a; font-style: normal; }
+
+.row { display: flex; align-items: center; gap: .8rem; }
+
+label { font-size: .6rem; letter-spacing: .15em; text-transform: uppercase; color: #5a5030; font-weight: 300; min-width: 80px; }
+
+select {
+  flex: 1; background: #201e16; border: 1px solid #42391f; border-radius: 3px;
+  padding: .35rem .55rem; font-family: inherit; font-size: .85rem;
+  font-weight: 500; color: #f0c060; outline: none;
+}
+select option { background: #181610; }
+
+.val { font-size: 1rem; font-weight: 500; color: #f0c060; min-width: 44px; }
+
+input[type=range] {
+  flex: 1; -webkit-appearance: none; height: 4px;
+  background: #201e16; border-radius: 2px; border: 1px solid #42391f; outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+  background: #c8881a; border: 2px solid #0e0d0a;
+}
+
+#btn-cam {
+  background: #c8881a; border: none; border-radius: 4px;
+  padding: .55rem 1.2rem; color: #0e0d0a;
+  font-family: inherit; font-size: .75rem; font-weight: 500;
+  letter-spacing: .1em; text-transform: uppercase; cursor: pointer;
+  white-space: nowrap;
+}
+#btn-cam:active { opacity: .8; }
+
+.status {
+  font-size: .62rem; color: #5a5030; font-weight: 300; letter-spacing: .08em;
+  text-align: center;
+}
+.status.ok { color: #50a838; }
+.status.bad { color: #e05050; }
+
+#tilt-val {
+  font-size: .7rem; color: #9a8860; font-weight: 300; text-align: center; letter-spacing: .05em;
+}
+
+#no-cam {
+  position: fixed; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1rem;
+  color: #5a5030; font-size: .75rem; text-align: center; padding: 2rem;
+}
+#no-cam.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<video id="video" autoplay playsinline muted></video>
+<canvas id="overlay"></canvas>
+
+<div id="no-cam">
+  <div style="font-size:2.5rem;color:#c8881a;font-family:'Teko',sans-serif;font-weight:600;letter-spacing:.06em">HANG<em style="color:#f0c060">MAK</em></div>
+  <div>Appuyez sur "Activer caméra" pour vérifier l'angle de votre sangle sur le terrain</div>
+</div>
+
+<div id="ui">
+  <div class="row" style="justify-content:space-between;align-items:center;">
+    <div class="logo">Hang<em>Mak</em> <span style="font-size:.7rem;color:#5a5030;font-weight:300;text-transform:none;letter-spacing:0">— vérificateur d'angle</span></div>
+    <button id="btn-cam" onclick="startCam()">Activer caméra</button>
+  </div>
+
+  <div class="row">
+    <label>Angle cible</label>
+    <select id="ang" onchange="redraw()">
+      <option value="15">15°</option>
+      <option value="20">20°</option>
+      <option value="25">25°</option>
+      <option value="30" selected>30° — optimal</option>
+      <option value="35">35°</option>
+      <option value="45">45°</option>
+    </select>
+  </div>
+
+  <div class="row">
+    <label>Opacité overlay</label>
+    <input type="range" id="opacity" min="20" max="100" value="75" oninput="redraw()">
+    <span class="val" id="op-val">75%</span>
+  </div>
+
+  <div id="tilt-val">Inclinaison téléphone : —</div>
+  <div class="status" id="status">En attente de la caméra…</div>
+</div>
+
+<script>
+const video = document.getElementById('video');
+const cv    = document.getElementById('overlay');
+const ctx   = cv.getContext('2d');
+let   camActive = false;
+let   tiltDeg   = null; // device beta (front/back tilt)
+let   animFrame = null;
+
+function resize(){
+  cv.width  = window.innerWidth;
+  cv.height = window.innerHeight;
+  redraw();
+}
+window.addEventListener('resize', resize);
+resize();
+
+async function startCam(){
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 } },
+      audio: false
+    });
+    video.srcObject = stream;
+    video.classList.add('active');
+    camActive = true;
+    document.getElementById('no-cam').classList.add('hidden');
+    document.getElementById('btn-cam').textContent = 'Caméra active';
+    document.getElementById('btn-cam').style.background = '#3a7a2a';
+    document.getElementById('status').textContent = 'Pointez le téléphone le long de la sangle';
+    document.getElementById('status').className = 'status';
+    startGyro();
+    loop();
+  } catch(e) {
+    document.getElementById('status').textContent = 'Accès caméra refusé — vérifiez les permissions';
+    document.getElementById('status').className = 'status bad';
+  }
+}
+
+function startGyro(){
+  if(typeof DeviceOrientationEvent !== 'undefined'){
+    // iOS 13+ needs permission
+    if(typeof DeviceOrientationEvent.requestPermission === 'function'){
+      DeviceOrientationEvent.requestPermission().then(state => {
+        if(state === 'granted') window.addEventListener('deviceorientation', onOrient);
+      }).catch(()=>{});
+    } else {
+      window.addEventListener('deviceorientation', onOrient);
+    }
+  }
+}
+
+function onOrient(e){
+  // beta: front-back tilt, -180 to 180
+  // When phone is held portrait, looking along a slope:
+  // beta ≈ 90 means flat horizontal, beta ≈ 60 means 30° from horizontal
+  if(e.beta !== null){
+    // Convert: angle from horizontal = 90 - abs(beta) when in portrait
+    const fromHoriz = 90 - Math.abs(e.beta);
+    tiltDeg = Math.round(Math.max(0, Math.min(90, fromHoriz)));
+    document.getElementById('tilt-val').textContent =
+      `Inclinaison téléphone : ${tiltDeg}° depuis le sol`;
+  }
+}
+
+function loop(){
+  redraw();
+  animFrame = requestAnimationFrame(loop);
+}
+
+function redraw(){
+  const W = cv.width, H = cv.height;
+  const targetDeg = parseFloat(document.getElementById('ang').value) || 30;
+  const targetRad = targetDeg * Math.PI / 180;
+  const op = (parseFloat(document.getElementById('opacity').value) || 75) / 100;
+  document.getElementById('op-val').textContent = Math.round(op*100)+'%';
+
+  ctx.clearRect(0,0,W,H);
+
+  if(!camActive){ drawNoCam(W,H,op,targetDeg,targetRad); return; }
+
+  const cx = W/2, cy = H/2;
+
+  // ── Horizontal reference line ──
+  ctx.strokeStyle = `rgba(90,80,48,${op*0.6})`;
+  ctx.lineWidth = 1;
+  ctx.setLineDash([8,6]);
+  ctx.beginPath(); ctx.moveTo(0,cy); ctx.lineTo(W,cy); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // ── Target angle line — full width diagonal ──
+  // Line through center at targetRad from horizontal
+  const len = Math.max(W,H)*1.5;
+  const dx  = Math.cos(targetRad)*len;
+  const dy  = Math.sin(targetRad)*len;
+
+  // Two lines: going up-right and down-left through center
+  ctx.strokeStyle = `rgba(200,136,26,${op})`;
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(cx - dx, cy + dy);
+  ctx.lineTo(cx + dx, cy - dy);
+  ctx.stroke();
+
+  // Parallel guide lines (±30px offset) — help align sangle width
+  ctx.strokeStyle = `rgba(200,136,26,${op*0.3})`;
+  ctx.lineWidth = 1.5;
+  const nx = Math.sin(targetRad), ny = Math.cos(targetRad); // normal to line
+  [30,-30].forEach(off=>{
+    ctx.beginPath();
+    ctx.moveTo(cx - dx + nx*off, cy + dy + ny*off);
+    ctx.lineTo(cx + dx + nx*off, cy - dy + ny*off);
+    ctx.stroke();
+  });
+
+  // ── Center crosshair ──
+  ctx.strokeStyle = `rgba(200,136,26,${op*0.7})`;
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(cx,cy,8,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx-14,cy); ctx.lineTo(cx+14,cy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx,cy-14); ctx.lineTo(cx,cy+14); ctx.stroke();
+
+  // ── Angle indicator (top-right corner, fixed square) ──
+  drawAngleIndicator(W,H,targetDeg,targetRad,op);
+
+  // ── Gyro feedback ──
+  if(tiltDeg !== null){
+    const diff = Math.abs(tiltDeg - targetDeg);
+    const matched = diff <= 3;
+    const almostMatched = diff <= 8;
+
+    // Color-coded tilt indicator bar
+    const barW = Math.min(W*.6, 260), barH = 6;
+    const barX = (W - barW)/2, barY = H*.12;
+
+    ctx.fillStyle = 'rgba(8,10,18,0.7)';
+    ctx.beginPath(); ctx.roundRect(barX-8,barY-20,barW+16,barH+36,6); ctx.fill();
+
+    // Bar background
+    ctx.fillStyle = 'rgba(48,44,30,0.8)';
+    ctx.beginPath(); ctx.roundRect(barX,barY,barW,barH,3); ctx.fill();
+
+    // Bar fill — current tilt position
+    const fillPct = Math.min(1, tiltDeg/90);
+    const targetPct = targetDeg/90;
+    const fillColor = matched ? '#50a838' : almostMatched ? '#c8881a' : '#e05050';
+    ctx.fillStyle = fillColor;
+    ctx.beginPath(); ctx.roundRect(barX,barY,barW*fillPct,barH,3); ctx.fill();
+
+    // Target marker
+    ctx.fillStyle = '#c8881a';
+    const markerX = barX + barW*targetPct;
+    ctx.fillRect(markerX-1.5, barY-4, 3, barH+8);
+
+    // Text feedback
+    ctx.fillStyle = fillColor;
+    ctx.font = `600 ${Math.round(H*.03)}px 'Teko',sans-serif`;
+    ctx.textAlign = 'center';
+    const msg = matched ? `ANGLE OK — ${tiltDeg}°`
+                       : tiltDeg < targetDeg ? `Inclinez plus ↑ (${tiltDeg}° / ${targetDeg}°)`
+                                             : `Inclinez moins ↓ (${tiltDeg}° / ${targetDeg}°)`;
+    ctx.fillText(msg, W/2, barY-6);
+
+    // Update status
+    const statusEl = document.getElementById('status');
+    statusEl.textContent = matched ? `Angle parfait — ${targetDeg}° atteint !` : `Téléphone : ${tiltDeg}° — Cible : ${targetDeg}°`;
+    statusEl.className = 'status ' + (matched ? 'ok' : '');
+  }
+}
+
+function drawAngleIndicator(W,H,targetDeg,targetRad,op){
+  const size = Math.min(90, W*.16);
+  const px = W - size - 16, py = 16;
+  const ox = px+size, oy = py+size; // origin bottom-right of square
+
+  ctx.fillStyle = 'rgba(8,10,18,0.85)';
+  ctx.beginPath(); ctx.roundRect(px-6,py-6,size+16,size+16,6); ctx.fill();
+  ctx.strokeStyle = 'rgba(66,57,31,0.6)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.roundRect(px-6,py-6,size+16,size+16,6); ctx.stroke();
+
+  // Ground line
+  ctx.strokeStyle = `rgba(90,80,48,${op})`;
+  ctx.lineWidth = 1.5; ctx.lineCap = 'round'; ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(ox-size,oy); ctx.lineTo(ox+2,oy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ox,oy-5); ctx.lineTo(ox,oy+5); ctx.stroke();
+
+  // Angle line at exact angle in 1:1 square
+  const lineLen = size*.88;
+  const ex = ox - lineLen*Math.cos(targetRad);
+  const ey = oy - lineLen*Math.sin(targetRad);
+  ctx.strokeStyle = `rgba(200,136,26,${op})`;
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(ox,oy); ctx.lineTo(ex,ey); ctx.stroke();
+
+  // Arc
+  const arcR = size*.28;
+  ctx.strokeStyle = `rgba(200,136,26,${op})`;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.arc(ox,oy,arcR,Math.PI,Math.PI+targetRad,false); ctx.stroke();
+
+  // Label
+  const bisA = Math.PI + targetRad/2;
+  const labR = arcR+14;
+  ctx.fillStyle = '#c8881a';
+  ctx.font = `600 ${Math.round(size*.22)}px 'Teko',sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText(`${targetDeg}°`, ox+labR*Math.cos(bisA), oy+labR*Math.sin(bisA)+4);
+}
+
+function drawNoCam(W,H,op,targetDeg,targetRad){
+  // Show the angle diagram in center when no camera
+  const size = Math.min(W,H)*.35;
+  const cx=W/2, cy=H*.35;
+  const ox=cx+size*.4, oy=cy+size*.4;
+
+  ctx.strokeStyle = 'rgba(90,80,48,0.5)'; ctx.lineWidth=1.5; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(ox-size*.8,oy); ctx.lineTo(ox+10,oy); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ox,oy-8); ctx.lineTo(ox,oy+8); ctx.stroke();
+
+  const lineLen=size*.75;
+  const ex=ox-lineLen*Math.cos(targetRad), ey=oy-lineLen*Math.sin(targetRad);
+  ctx.strokeStyle='rgba(200,136,26,0.7)'; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(ox,oy); ctx.lineTo(ex,ey); ctx.stroke();
+
+  const arcR=size*.22;
+  ctx.strokeStyle='rgba(200,136,26,0.7)'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(ox,oy,arcR,Math.PI,Math.PI+targetRad,false); ctx.stroke();
+
+  const bisA=Math.PI+targetRad/2, labR=arcR+20;
+  ctx.fillStyle='#c8881a';
+  ctx.font=`600 ${Math.round(size*.18)}px 'Teko',sans-serif`; ctx.textAlign='center';
+  ctx.fillText(`${targetDeg}°`,ox+labR*Math.cos(bisA),oy+labR*Math.sin(bisA)+6);
+
+  ctx.fillStyle='rgba(90,80,48,0.5)'; ctx.font=`300 ${Math.round(size*.08)}px 'IBM Plex Mono',monospace`;
+  ctx.fillText('sol / sangle',cx,oy+30);
+}
+</script>
+</body>
+</html>
