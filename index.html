@@ -279,7 +279,7 @@ input[type=range]::-moz-range-thumb {
   <canvas id="cv-size"></canvas>
   <video id="vid" autoplay playsinline muted></video>
   <canvas id="cv-ar"></canvas>
-  <div id="ar-hint">Alignez les sangles sur les <span>lignes orange</span></div>
+  <div id="ar-hint">Alignez les sangles sur les <span>lignes vertes</span></div>
 </div>
 
 <!-- Results -->
@@ -421,14 +421,14 @@ function drawAR() {
   c.font=`400 ${rlfs}px monospace`;
   pill(rl.toFixed(2)+' m', W/2, hamY - labelH/2 - 8, 'rgba(100,150,215,.95)');
 
-  // Height label — ORANGE, with more breathing room from left edge
-  const dimX = anchLx + 28;
+  // Height label — RIGHT side, outside anchRx, orange
+  const dimX = anchRx - 28;
   c.strokeStyle='rgba(200,136,26,.6)';c.lineWidth=1.2;
   c.beginPath();c.moveTo(dimX,anchY);c.lineTo(dimX,hamY);c.stroke();
   [anchY,hamY].forEach(y=>{c.beginPath();c.moveTo(dimX-5,y);c.lineTo(dimX+5,y);c.stroke();});
   c.font=`600 ${Math.round(fs*.9)}px 'Teko',sans-serif`;
-  c.fillStyle='rgba(200,136,26,.95)';c.textAlign='left';
-  c.fillText(hangPt.toFixed(2)+'m', dimX+10, (anchY+hamY)/2+fs*.32);
+  c.fillStyle='rgba(200,136,26,.95)';c.textAlign='right';
+  c.fillText(hangPt.toFixed(2)+'m', dimX-10, (anchY+hamY)/2+fs*.32);
 }
 
 async function toggleCam() {
