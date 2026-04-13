@@ -177,7 +177,7 @@ input[type=range]::-moz-range-thumb {
 .viz.on { display: block; }
 #vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 #cv-ar { position: absolute; inset: 0; width: 100%; height: 100%; }
-#cv-size { width: 100%; display: block; visibility: hidden; aspect-ratio: 16/7; }
+#cv-size { width: 100%; display: block; visibility: hidden; aspect-ratio: 16/9; }
 #ar-hint { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(8,10,18,.88); border-top: 1px solid #42391f; padding: .6rem 1rem; font-size: clamp(.62rem, 2.2vw, .72rem); color: #5a5030; letter-spacing: .08em; text-transform: uppercase; text-align: center; }
 #ar-hint span { color: #c8881a; }
 
@@ -279,10 +279,7 @@ input[type=range]::-moz-range-thumb {
   <canvas id="cv-size"></canvas>
   <video id="vid" autoplay playsinline muted></video>
   <canvas id="cv-ar"></canvas>
-  <div id="ar-hint">
-    Alignez les sangles sur les <span>lignes orange</span>
-    &nbsp;·&nbsp; gyroscope : <span id="gyro-txt">—</span>
-  </div>
+  <div id="ar-hint">Alignez les sangles sur les <span>lignes orange</span></div>
 </div>
 
 <!-- Results -->
@@ -309,13 +306,13 @@ input[type=range]::-moz-range-thumb {
 
 <script>
 const fmt = m => m >= 1 ? m.toFixed(2)+' m' : Math.round(m*100)+' cm';
-let camOn=false, mediaStream=null, rafAR=null, tilt=null;
+let camOn=false, mediaStream=null, rafAR=null;
 let G = { valid:false, hangPt:0, suspLen:0, rl:0, dist:6, angDeg:30, aRad:Math.PI/6, sitM:.6 };
 
 function drawAR() {
   const viz = document.getElementById('viz');
   const W = viz.clientWidth || 500;
-  const H = viz.clientHeight || Math.round(W*7/16);
+  const H = viz.clientHeight || Math.round(W*9/16);
   const cv = document.getElementById('cv-ar');
   cv.width=W; cv.height=H;
   const c = cv.getContext('2d');
@@ -389,17 +386,6 @@ function drawAR() {
   [anchY,groundY].forEach(y=>{c.beginPath();c.moveTo(anchLx+11,y);c.lineTo(anchLx+21,y);c.stroke();});
   c.fillStyle='rgba(200,136,26,.92)';c.font=`600 ${Math.round(fs*.95)}px 'Teko',sans-serif`;c.textAlign='left';
   c.fillText(hangPt.toFixed(2)+'m',anchLx+26,(anchY+groundY)/2+fs*.32);
-
-  if (tilt!==null) {
-    const diff=Math.abs(tilt-angDeg);
-    const col=diff<=3?'#50a838':diff<=8?'#c8881a':'#e05050';
-    const msg=diff<=3?`OK — ${tilt}°`:tilt<angDeg?`Inclinez + ↑  ${tilt}° / ${angDeg}°`:`Inclinez - ↓  ${tilt}° / ${angDeg}°`;
-    c.fillStyle=col+'22';c.beginPath();c.roundRect(W/2-130,8,260,Math.round(H*.075)+4,5);c.fill();
-    c.fillStyle=col;c.font=`600 ${Math.round(H*.056)}px 'Teko',sans-serif`;c.textAlign='center';
-    c.fillText(msg,W/2,Math.round(H*.074));
-    document.getElementById('gyro-txt').textContent=`${tilt}° / ${angDeg}°`;
-    document.getElementById('gyro-txt').style.color=col;
-  }
 }
 
 async function toggleCam() {
@@ -411,7 +397,7 @@ async function toggleCam() {
       document.getElementById('viz').classList.add('on');
       document.getElementById('btn-cam').classList.add('on');
       document.getElementById('btn-txt').textContent='Arrêter caméra';
-      camOn=true; initGyro();
+      camOn=true;
       (function loop(){drawAR();rafAR=requestAnimationFrame(loop);})();
     } catch(e) { alert('Caméra non disponible — '+e.message); }
   } else {
@@ -422,15 +408,6 @@ async function toggleCam() {
     document.getElementById('btn-txt').textContent='Activer caméra';
     camOn=false;
   }
-}
-
-function initGyro() {
-  const listen=()=>window.addEventListener('deviceorientation',e=>{
-    if(e.beta!==null) tilt=Math.round(Math.max(0,Math.min(90,90-Math.abs(e.beta))));
-  });
-  if(typeof DeviceOrientationEvent!=='undefined'&&typeof DeviceOrientationEvent.requestPermission==='function'){
-    DeviceOrientationEvent.requestPermission().then(s=>{if(s==='granted')listen();}).catch(()=>{});
-  } else {listen();}
 }
 
 function calc() {
