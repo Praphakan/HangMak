@@ -177,7 +177,7 @@ input[type=range]::-moz-range-thumb {
 .viz.on { display: block; }
 #vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 #cv-ar { position: absolute; inset: 0; width: 100%; height: 100%; }
-#cv-size { width: 100%; display: block; visibility: hidden; aspect-ratio: 16/9; }
+#cv-size { width: 100%; display: block; visibility: hidden; aspect-ratio: 16/7; }
 #ar-hint { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(8,10,18,.88); border-top: 1px solid #42391f; padding: .6rem 1rem; font-size: clamp(.62rem, 2.2vw, .72rem); color: #5a5030; letter-spacing: .08em; text-transform: uppercase; text-align: center; }
 #ar-hint span { color: #c8881a; }
 
@@ -315,7 +315,7 @@ let G = { valid:false, hangPt:0, suspLen:0, rl:0, dist:6, angDeg:30, aRad:Math.P
 function drawAR() {
   const viz = document.getElementById('viz');
   const W = viz.clientWidth || 500;
-  const H = viz.clientHeight || Math.round(W*9/16);
+  const H = viz.clientHeight || Math.round(W*7/16);
   const cv = document.getElementById('cv-ar');
   cv.width=W; cv.height=H;
   const c = cv.getContext('2d');
