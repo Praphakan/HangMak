@@ -416,9 +416,7 @@ function drawAR() {
   pill(suspLen.toFixed(2)+'m', lMidX, sLabelY, 'rgba(80,200,80,.95)');
   pill(suspLen.toFixed(2)+'m', rMidX, sLabelY, 'rgba(80,200,80,.95)');
 
-  // Ridgeline label — ABOVE the ridgeline, centered, BLUE
-  const rlfs = Math.max(11, Math.round(fs*.8));
-  c.font=`400 ${rlfs}px monospace`;
+  // Ridgeline label — ABOVE the ridgeline, centered, BLUE, same Teko font
   pill(rl.toFixed(2)+' m', W/2, hamY - labelH/2 - 8, 'rgba(100,150,215,.95)');
 
   // Height indicator — vertical orange line from left anchor down to bottom of canvas
@@ -430,10 +428,16 @@ function drawAR() {
   // Small tick at anchor level
   c.lineWidth=2;
   c.beginPath(); c.moveTo(anchLx-8, anchY+9); c.lineTo(anchLx+8, anchY+9); c.stroke();
-  // Label to the right, near the bottom tick
-  c.font=`600 ${Math.round(fs*.9)}px 'Teko',sans-serif`;
+  // Label — same pill style as others, Teko font, orange, at bottom-right of line
+  const htxt = hangPt.toFixed(2)+'m';
+  c.font=`600 ${fs}px 'Teko',sans-serif`;
+  const htw = c.measureText(htxt).width;
+  const hpw = htw+16, hph = labelH;
+  const hpx = anchLx+14, hpy = floorY - hph/2 - 2;
+  c.fillStyle='rgba(6,8,14,.88)';
+  c.beginPath(); c.roundRect(hpx, hpy-hph/2, hpw, hph, 4); c.fill();
   c.fillStyle='rgba(200,136,26,.95)'; c.textAlign='left';
-  c.fillText(hangPt.toFixed(2)+'m', anchLx+14, floorY-4);
+  c.fillText(htxt, hpx+8, hpy+fs*.3);
 }
 
 async function toggleCam() {
