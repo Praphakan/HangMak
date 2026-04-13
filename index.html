@@ -11,45 +11,168 @@ html { font-size: 16px; }
 body { background: #0e0d0a; color: #d8c898; font-family: 'IBM Plex Mono', monospace; }
 .root { padding: 1.4rem 1.1rem 2.5rem; max-width: 680px; margin: 0 auto; }
 
+/* HEADER */
 .header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; margin-bottom: 1.2rem; border-bottom: 1px solid #42391f; gap: .6rem; }
 .logo { font-family: 'Teko', sans-serif; font-size: clamp(2rem, 7vw, 2.6rem); font-weight: 600; letter-spacing: .06em; color: #f0c060; text-transform: uppercase; line-height: 1; }
 .logo em { color: #c8881a; font-style: normal; }
 .sub { font-size: clamp(.6rem, 2vw, .68rem); letter-spacing: .16em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-top: .25rem; }
-
 .cam-btn { flex-shrink: 0; background: #181610; border: 1px solid #42391f; border-radius: 5px; padding: .65rem 1rem; color: #c8881a; font-family: 'IBM Plex Mono', monospace; font-size: clamp(.68rem, 2.2vw, .78rem); font-weight: 400; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .45rem; white-space: nowrap; }
 .cam-btn.on { background: #c8881a; color: #0e0d0a; border-color: #c8881a; }
 .dot { width: 9px; height: 9px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #302c1e; border: 1px solid #42391f; border-radius: 6px; overflow: hidden; margin-bottom: 1px; }
-.cell { background: #181610; padding: .9rem 1rem; }
-.lbl { display: block; font-size: clamp(.62rem, 2.2vw, .7rem); letter-spacing: .13em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-bottom: .45rem; }
-.irow { display: flex; align-items: center; gap: 6px; }
+/* FORM GRID — toutes les cellules ont la même hauteur via align-items:stretch */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: #302c1e;
+  border: 1px solid #42391f;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 1px;
+  /* force uniform row heights */
+  grid-auto-rows: 1fr;
+}
 
+.cell {
+  background: #181610;
+  padding: .9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lbl {
+  display: block;
+  font-size: clamp(.62rem, 2.2vw, .7rem);
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: #5a5030;
+  font-weight: 300;
+  margin-bottom: .45rem;
+  line-height: 1.3;
+}
+
+.irow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+/* Number inputs and select — uniform height via padding only, no min-height */
 input[type=number], select {
-  flex: 1; min-width: 0; min-height: 48px;
-  background: #201e16; border: 1px solid #42391f; border-radius: 4px;
-  padding: .55rem .65rem;
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  background: #201e16;
+  border: 1px solid #42391f;
+  border-radius: 4px;
+  padding: 0 .65rem;
   font-family: 'IBM Plex Mono', monospace;
   font-size: clamp(1rem, 3.8vw, 1.15rem);
-  font-weight: 500; color: #f0c060; outline: none; -moz-appearance: textfield;
+  font-weight: 500;
+  color: #f0c060;
+  outline: none;
+  -moz-appearance: textfield;
+  /* prevent iOS zoom on focus */
+  touch-action: manipulation;
 }
 input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 input:focus, select:focus { border-color: #c8881a; }
 select option { background: #181610; color: #d8c898; }
+.unit { font-size: clamp(.7rem, 2.5vw, .8rem); color: #5a5030; font-weight: 300; white-space: nowrap; flex-shrink: 0; }
 
-.unit { font-size: clamp(.7rem, 2.5vw, .8rem); color: #5a5030; font-weight: 300; white-space: nowrap; }
+/* RIDGELINE CELL — slider with visible track */
+.rl-cell {
+  background: #181610;
+  padding: .9rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-input[type=range] { flex: 1; -webkit-appearance: none; height: 5px; background: #201e16; border-radius: 3px; border: 1px solid #42391f; outline: none; min-height: 44px; }
-input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 24px; height: 24px; border-radius: 50%; background: #c8881a; border: 2px solid #0e0d0a; }
-input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 50%; background: #c8881a; border: 2px solid #0e0d0a; }
+.rl-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: .5rem;
+}
 
-.rl-disp { font-size: clamp(.82rem, 3vw, .95rem); font-weight: 500; color: #f0c060; white-space: nowrap; }
+.rl-disp {
+  font-size: clamp(.9rem, 3.2vw, 1.05rem);
+  font-weight: 500;
+  color: #f0c060;
+  white-space: nowrap;
+}
 
-.badge { font-size: clamp(.6rem, 2vw, .68rem); letter-spacing: .08em; text-transform: uppercase; padding: .22rem .58rem; border-radius: 3px; white-space: nowrap; }
+.rl-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rl-bound {
+  font-size: clamp(.58rem, 2vw, .65rem);
+  color: #5a5030;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Range slider — track fully visible, no min-height trick */
+input[type=range] {
+  flex: 1;
+  min-width: 0;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: #201e16;
+  border-radius: 3px;
+  border: 1px solid #42391f;
+  outline: none;
+  cursor: pointer;
+  /* Proper vertical centering without inflating height */
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+input[type=range]::-webkit-slider-container { height: 6px; }
+input[type=range]::-webkit-slider-runnable-track {
+  height: 6px;
+  background: #201e16;
+  border-radius: 3px;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #c8881a;
+  border: 2px solid #0e0d0a;
+  margin-top: -11px; /* center thumb on 6px track */
+  cursor: pointer;
+}
+input[type=range]::-moz-range-track {
+  height: 6px;
+  background: #201e16;
+  border-radius: 3px;
+  border: 1px solid #42391f;
+}
+input[type=range]::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #c8881a;
+  border: 2px solid #0e0d0a;
+  cursor: pointer;
+}
+
+.badge { font-size: clamp(.6rem, 2vw, .68rem); letter-spacing: .08em; text-transform: uppercase; padding: .22rem .58rem; border-radius: 3px; white-space: nowrap; flex-shrink: 0; }
 .ok   { background: rgba(58,122,42,.2);  color: #6ac050; border: 1px solid rgba(58,122,42,.35); }
 .warn { background: rgba(168,106,8,.2);  color: #c89028; border: 1px solid rgba(168,106,8,.35); }
 .bad  { background: rgba(152,32,32,.25); color: #e05050; border: 1px solid rgba(152,32,32,.35); }
 
+/* CAMERA */
 .viz { border: 1px solid #42391f; border-radius: 6px; overflow: hidden; margin-bottom: 1px; background: #080c14; position: relative; display: none; }
 .viz.on { display: block; }
 #vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -58,6 +181,7 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 #ar-hint { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(8,10,18,.88); border-top: 1px solid #42391f; padding: .6rem 1rem; font-size: clamp(.62rem, 2.2vw, .72rem); color: #5a5030; letter-spacing: .08em; text-transform: uppercase; text-align: center; }
 #ar-hint span { color: #c8881a; }
 
+/* RESULTS */
 .res { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: #302c1e; border: 1px solid #42391f; border-radius: 6px; overflow: hidden; margin-bottom: .9rem; }
 .rcard { background: #181610; padding: .9rem 1rem; border-left: 3px solid #c8881a; }
 .rlabel { font-size: clamp(.6rem, 2vw, .68rem); letter-spacing: .12em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-bottom: .28rem; }
@@ -82,35 +206,61 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
 </div>
 
 <div class="form-grid">
+
+  <!-- Longueur hamac -->
   <div class="cell">
     <span class="lbl">Longueur hamac</span>
-    <div class="irow"><input type="number" id="hl" value="3.35" min="1" max="15" step="0.05" oninput="calc()"><span class="unit">m</span></div>
-  </div>
-  <div class="cell">
-    <span class="lbl">Ridgeline — <span id="pct-lbl">83</span>%</span>
-    <div class="irow" style="gap:6px;">
-      <span style="font-size:.6rem;color:#5a5030">80</span>
-      <input type="range" id="pct" min="80" max="85" step="1" value="83" oninput="calc()">
-      <span style="font-size:.6rem;color:#5a5030">85</span>
-      <span class="rl-disp" id="rl-m">—</span>
+    <div class="irow">
+      <input type="number" id="hl" value="3.35" min="1" max="15" step="0.05" oninput="calc()">
+      <span class="unit">m</span>
     </div>
   </div>
+
+  <!-- Ridgeline — cellule spéciale avec layout vertical propre -->
+  <div class="rl-cell">
+    <div class="rl-top">
+      <span class="lbl" style="margin-bottom:0">Ridgeline <span id="pct-lbl">83</span>%</span>
+      <span class="rl-disp" id="rl-m">—</span>
+    </div>
+    <div class="rl-slider-row">
+      <span class="rl-bound">80%</span>
+      <input type="range" id="pct" min="80" max="85" step="1" value="83" oninput="calc()">
+      <span class="rl-bound">85%</span>
+    </div>
+  </div>
+
+  <!-- Distance arbres -->
   <div class="cell">
     <span class="lbl">Distance arbres</span>
-    <div class="irow"><input type="number" id="dist" value="6.0" min="1" max="30" step="0.1" oninput="calc()"><span class="unit">m</span></div>
+    <div class="irow">
+      <input type="number" id="dist" value="6.0" min="1" max="30" step="0.1" oninput="calc()">
+      <span class="unit">m</span>
+    </div>
   </div>
+
+  <!-- Hauteur assise -->
   <div class="cell">
     <span class="lbl">Hauteur d'assise</span>
-    <div class="irow"><input type="number" id="sit" value="60" min="10" max="120" step="1" oninput="calc()"><span class="unit">cm</span></div>
+    <div class="irow">
+      <input type="number" id="sit" value="60" min="10" max="120" step="1" oninput="calc()">
+      <span class="unit">cm</span>
+    </div>
   </div>
+
+  <!-- Poids -->
   <div class="cell">
     <span class="lbl">Poids total</span>
-    <div class="irow"><input type="number" id="wt" value="80" min="10" max="500" step="1" oninput="calc()"><span class="unit">kg</span></div>
+    <div class="irow">
+      <input type="number" id="wt" value="80" min="10" max="500" step="1" oninput="calc()">
+      <span class="unit">kg</span>
+    </div>
   </div>
+
+  <!-- Angle -->
   <div class="cell">
     <span class="lbl">Angle depuis le sol</span>
-    <div class="irow" style="flex-wrap:wrap;gap:6px;">
-      <select id="ang" onchange="calc()" style="flex:1;min-width:80px;">
+    <div class="irow" style="flex-wrap:wrap; gap:6px;">
+      <select id="ang" onchange="calc()" style="flex:1; min-width:80px;">
         <option value="15">15°</option>
         <option value="20">20°</option>
         <option value="25">25°</option>
@@ -121,8 +271,10 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
       <span class="badge ok" id="badge">Optimal</span>
     </div>
   </div>
+
 </div>
 
+<!-- Camera -->
 <div class="viz" id="viz">
   <canvas id="cv-size"></canvas>
   <video id="vid" autoplay playsinline muted></video>
@@ -133,11 +285,25 @@ input[type=range]::-moz-range-thumb { width: 24px; height: 24px; border-radius: 
   </div>
 </div>
 
+<!-- Results -->
 <div class="res">
-  <div class="rcard"><div class="rlabel">Hauteur ancrage</div><div class="rval" id="r-h">—</div><div class="rsub">sur l'arbre</div></div>
-  <div class="rcard"><div class="rlabel">Sangle</div><div class="rval" id="r-s">—</div><div class="rsub">par côté</div></div>
-  <div class="rcard"><div class="rlabel">Ridgeline</div><div class="rval" id="r-rl">—</div><div class="rsub" id="r-rl-s">83%</div></div>
+  <div class="rcard">
+    <div class="rlabel">Hauteur ancrage</div>
+    <div class="rval" id="r-h">—</div>
+    <div class="rsub">sur l'arbre</div>
+  </div>
+  <div class="rcard">
+    <div class="rlabel">Sangle</div>
+    <div class="rval" id="r-s">—</div>
+    <div class="rsub">par côté</div>
+  </div>
+  <div class="rcard">
+    <div class="rlabel">Ridgeline</div>
+    <div class="rval" id="r-rl">—</div>
+    <div class="rsub" id="r-rl-s">83%</div>
+  </div>
 </div>
+
 <div class="tip" id="tip">—</div>
 </div>
 
@@ -157,15 +323,15 @@ function drawAR() {
   const { aRad, angDeg, rl, dist, suspLen, hangPt, valid } = G;
   if (!valid) return;
 
-  const groundY = H*.68, edgePad = W*.06;
-  const totalPx = W - 2*edgePad;
-  const rlRatio = rl/dist, rlPx = rlRatio*totalPx;
-  const sangHPx = (totalPx-rlPx)/2;
-  const dY = sangHPx*Math.tan(aRad);
+  const groundY=H*.68, edgePad=W*.06;
+  const totalPx=W-2*edgePad;
+  const rlRatio=rl/dist, rlPx=rlRatio*totalPx;
+  const sangHPx=(totalPx-rlPx)/2;
+  const dY=sangHPx*Math.tan(aRad);
   const hamLx=edgePad+sangHPx, hamRx=W-edgePad-sangHPx;
   const anchLx=edgePad, anchRx=W-edgePad;
   const anchY=groundY-dY, sagPx=(hamRx-hamLx)*.1;
-  const fs=Math.max(13,Math.round(H*.055));
+  const fs=Math.max(13, Math.round(H*.055));
 
   function strap(ax,ay,ex,ey) {
     c.strokeStyle='rgba(240,192,60,.15)';c.lineWidth=22;c.lineCap='round';c.setLineDash([]);
@@ -186,15 +352,21 @@ function drawAR() {
   [anchLx,anchRx].forEach(x=>{c.beginPath();c.arc(x,anchY,9,0,Math.PI*2);c.fill();c.stroke();});
 
   c.strokeStyle='rgba(28,18,4,.8)';c.lineWidth=13;c.lineCap='round';
-  c.beginPath();c.moveTo(hamLx,groundY);c.bezierCurveTo(hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx,groundY);c.stroke();
+  c.beginPath();c.moveTo(hamLx,groundY);
+  c.bezierCurveTo(hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx,groundY);
+  c.stroke();
   c.fillStyle='rgba(55,38,10,.5)';
   c.beginPath();c.moveTo(hamLx,groundY-3);c.lineTo(hamRx,groundY-3);
-  c.bezierCurveTo(hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamLx,groundY-3);c.fill();
+  c.bezierCurveTo(hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamLx,groundY-3);
+  c.fill();
   c.strokeStyle='rgba(200,158,55,.85)';c.lineWidth=4.5;
-  c.beginPath();c.moveTo(hamLx,groundY);c.bezierCurveTo(hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx,groundY);c.stroke();
+  c.beginPath();c.moveTo(hamLx,groundY);
+  c.bezierCurveTo(hamLx+(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx-(hamRx-hamLx)*.35,groundY+sagPx*2.2,hamRx,groundY);
+  c.stroke();
 
   c.setLineDash([10,7]);c.strokeStyle='rgba(100,150,215,.7)';c.lineWidth=2.2;
-  c.beginPath();c.moveTo(hamLx,groundY);c.lineTo(hamRx,groundY);c.stroke();c.setLineDash([]);
+  c.beginPath();c.moveTo(hamLx,groundY);c.lineTo(hamRx,groundY);c.stroke();
+  c.setLineDash([]);
 
   function strapLabel(ax,ay,ex,ey,txt) {
     const mx=(ax+ex)/2,my=(ay+ey)/2;
@@ -233,7 +405,7 @@ function drawAR() {
 async function toggleCam() {
   if (!camOn) {
     try {
-      mediaStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920}},audio:false});
+      mediaStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920}},audio:false});
       const vid=document.getElementById('vid');
       vid.srcObject=mediaStream; await vid.play();
       document.getElementById('viz').classList.add('on');
@@ -268,10 +440,12 @@ function calc() {
   const ang=parseFloat(document.getElementById('ang').value)||30;
   const pct=parseFloat(document.getElementById('pct').value)||83;
   const rl=hl*(pct/100), aRad=ang*Math.PI/180, valid=dist>rl+0.05;
+
   document.getElementById('pct-lbl').textContent=pct;
   document.getElementById('rl-m').textContent=rl.toFixed(2)+' m';
   document.getElementById('r-rl').textContent=fmt(rl);
   document.getElementById('r-rl-s').textContent=pct+'% hamac';
+
   if(!valid){
     document.getElementById('r-h').textContent='—';
     document.getElementById('r-s').textContent='—';
@@ -281,13 +455,16 @@ function calc() {
   const hangPt=sit+(dist/2)*Math.tan(aRad);
   const suspLen=((dist-rl)/2)/Math.cos(aRad);
   G={valid,hangPt,suspLen,rl,dist,angDeg:ang,aRad,sitM:sit};
+
   document.getElementById('r-h').textContent=fmt(hangPt);
   document.getElementById('r-s').textContent=fmt(suspLen);
+
   const b=document.getElementById('badge');
   if(ang===30){b.textContent='Optimal';b.className='badge ok';}
   else if(ang<=20){b.textContent='Danger';b.className='badge bad';}
   else if(ang>=40){b.textContent='Détendu';b.className='badge warn';}
   else{b.textContent='Correct';b.className='badge ok';}
+
   let tip='';
   if(ang<=20) tip=`<strong>Danger :</strong> tension très élevée à ${ang}°. Préférez 30°.`;
   else if(ang===30) tip=`Sangles à <strong>${fmt(hangPt)}</strong> sur chaque arbre · <strong>${fmt(suspLen)}</strong> par sangle · dormez en diagonale.`;
