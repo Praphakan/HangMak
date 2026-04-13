@@ -421,14 +421,16 @@ function drawAR() {
   c.font=`400 ${rlfs}px monospace`;
   pill(rl.toFixed(2)+' m', W/2, hamY - labelH/2 - 8, 'rgba(100,150,215,.95)');
 
-  // Height label — RIGHT side, outside anchRx, orange
-  const dimX = anchRx - 28;
-  c.strokeStyle='rgba(200,136,26,.6)';c.lineWidth=1.2;
-  c.beginPath();c.moveTo(dimX,anchY);c.lineTo(dimX,hamY);c.stroke();
-  [anchY,hamY].forEach(y=>{c.beginPath();c.moveTo(dimX-5,y);c.lineTo(dimX+5,y);c.stroke();});
+  // Height indicator — vertical orange line DOWN from left anchor ring, label at bottom-right
+  c.strokeStyle='rgba(200,136,26,.88)'; c.lineWidth=4; c.lineCap='round'; c.setLineDash([]);
+  c.beginPath(); c.moveTo(anchLx, anchY+9); c.lineTo(anchLx, hamY); c.stroke();
+  // Small horizontal tick at bottom
+  c.lineWidth=2;
+  c.beginPath(); c.moveTo(anchLx-8, hamY); c.lineTo(anchLx+8, hamY); c.stroke();
+  // Label to the right of the line, at the bottom
   c.font=`600 ${Math.round(fs*.9)}px 'Teko',sans-serif`;
-  c.fillStyle='rgba(200,136,26,.95)';c.textAlign='right';
-  c.fillText(hangPt.toFixed(2)+'m', dimX-10, (anchY+hamY)/2+fs*.32);
+  c.fillStyle='rgba(200,136,26,.95)'; c.textAlign='left';
+  c.fillText(hangPt.toFixed(2)+'m', anchLx+14, hamY+2);
 }
 
 async function toggleCam() {
