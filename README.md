@@ -5,7 +5,7 @@
 
 Que tu sois en randonnée, en bikepacking ou simplement en forêt, HangMak te permet de trouver la bonne hauteur d’ancrage, l’angle optimal et le nombre de sangles nécessaires pour une suspension confortable et sécurisée.
 
-<img width="707" height="628" alt="Capture d’écran 2026-04-14 à 21 13 14" src="https://github.com/user-attachments/assets/d617d1c2-4bfe-4575-8903-a69240bc80c4" /> ![IMG_5032](https://github.com/user-attachments/assets/a03afc30-9640-4e90-83ef-ed2786394bfe)
+![IMG_5032](https://github.com/user-attachments/assets/a03afc30-9640-4e90-83ef-ed2786394bfe)
 
 
 ## 🎯 Fonctionnalités
