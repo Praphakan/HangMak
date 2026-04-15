@@ -256,8 +256,17 @@ input[type=range]::-moz-range-thumb {
     </div>
   </div>
 
-  <!-- Angle -->
+  <!-- Largeur hamac (optionnel) -->
   <div class="cell">
+    <span class="lbl">Largeur hamac <span style="color:#3a3020;font-size:.85em">(optionnel)</span></span>
+    <div class="irow">
+      <input type="number" id="width" value="" min="0.5" max="3" step="0.05" placeholder="—" oninput="calc()">
+      <span class="unit">m</span>
+    </div>
+  </div>
+
+  <!-- Angle — auto si largeur renseignée, sinon manuel -->
+  <div class="cell" style="grid-column:span 2;">
     <span class="lbl">Angle depuis le sol</span>
     <div class="irow" style="flex-wrap:wrap; gap:6px;">
       <select id="ang" onchange="calc()" style="flex:1; min-width:80px;">
@@ -269,6 +278,7 @@ input[type=range]::-moz-range-thumb {
         <option value="45">45°</option>
       </select>
       <span class="badge ok" id="badge">Optimal</span>
+      <span id="angle-hint" style="font-size:clamp(.52rem,1.8vw,.6rem);color:#5a5030;font-weight:300;width:100%;margin-top:.2rem;display:none;"></span>
     </div>
   </div>
 
@@ -463,12 +473,49 @@ async function toggleCam() {
 }
 
 function calc() {
-  const hl=parseFloat(document.getElementById('hl').value)||3.35;
-  const dist=parseFloat(document.getElementById('dist').value)||6;
-  const sit=(parseFloat(document.getElementById('sit').value)||60)/100;
-  const ang=parseFloat(document.getElementById('ang').value)||30;
-  const pct=parseFloat(document.getElementById('pct').value)||83;
-  const rl=hl*(pct/100), aRad=ang*Math.PI/180, valid=dist>rl+0.05;
+  const hl   = parseFloat(document.getElementById('hl').value)||3.35;
+  const dist = parseFloat(document.getElementById('dist').value)||6;
+  const sit  = (parseFloat(document.getElementById('sit').value)||60)/100;
+  const pct  = parseFloat(document.getElementById('pct').value)||83;
+  const wRaw = document.getElementById('width').value;
+  const width = wRaw !== '' ? parseFloat(wRaw) : null;
+
+  // ── Auto-recommend angle from width if provided ──
+  const angSel = document.getElementById('ang');
+  const hintEl = document.getElementById('angle-hint');
+  let ang = parseFloat(angSel.value) || 30;
+  let layAngle = null;
+  let sizeLabel = null;
+
+  if (width !== null && !isNaN(width)) {
+    if (width <= 1.3) {
+      // Small — recommend 15-20°
+      ang = 20;
+      sizeLabel = 'Small';
+      layAngle = '5–15°';
+    } else if (width <= 1.6) {
+      // Medium — recommend 30°
+      ang = 30;
+      sizeLabel = 'Medium';
+      layAngle = '~15°';
+    } else {
+      // Large — recommend 35°
+      ang = 35;
+      sizeLabel = 'Large';
+      layAngle = '20–40°';
+    }
+    // Set the select to match
+    angSel.value = ang;
+    hintEl.style.display = 'block';
+    hintEl.innerHTML = `Hamac <strong style="color:#c8881a">${sizeLabel}</strong> (${width.toFixed(2)}m) · angle recommandé <strong style="color:#c8881a">${ang}°</strong> · angle de couchage <strong style="color:#c8881a">${layAngle}</strong>`;
+  } else {
+    hintEl.style.display = 'none';
+    ang = parseFloat(angSel.value) || 30;
+  }
+
+  const rl   = hl*(pct/100);
+  const aRad = ang*Math.PI/180;
+  const valid = dist>rl+0.05;
 
   document.getElementById('pct-lbl').textContent=pct;
   document.getElementById('rl-m').textContent=rl.toFixed(2)+' m';
@@ -499,6 +546,7 @@ function calc() {
   else if(ang===30) tip=`Sangles à <strong>${fmt(hangPt)}</strong> sur chaque arbre · <strong>${fmt(suspLen)}</strong> par sangle · dormez en diagonale.`;
   else if(hangPt>3) tip=`Ancrage à <strong>${fmt(hangPt)}</strong> — hauteur importante. Réduisez l'angle.`;
   else tip=`Ancrage <strong>${fmt(hangPt)}</strong> · sangle <strong>${fmt(suspLen)}</strong> par côté.`;
+  if(layAngle) tip += ` Angle de couchage estimé : <strong>${layAngle}</strong>.`;
   document.getElementById('tip').innerHTML=tip;
 }
 
