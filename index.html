@@ -8,218 +8,144 @@
 @import url('https://fonts.googleapis.com/css2?family=Teko:wght@500;600&family=IBM+Plex+Mono:wght@300;400;500&display=swap');
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; }
-body { background: #0e0d0a; color: #d8c898; font-family: 'IBM Plex Mono', monospace; }
+body { background: #0e0d0a; color: #d8c898; font-family: 'IBM Plex Mono', monospace; min-height: 100vh; }
+
+/* ── SPLASH ── */
+#splash { position: fixed; inset: 0; background: #0e0d0a; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; gap: 2.2rem; z-index: 100; }
+.s-logo { font-family: 'Teko', sans-serif; font-size: clamp(3rem,12vw,5rem); font-weight: 600; letter-spacing: .06em; color: #f0c060; text-transform: uppercase; line-height: 1; text-align: center; }
+.s-logo em { color: #c8881a; font-style: normal; }
+.s-tagline { font-size: clamp(.6rem,2.5vw,.75rem); letter-spacing: .2em; text-transform: uppercase; color: #5a5030; font-weight: 300; text-align: center; }
+.s-section { width: 100%; max-width: 360px; }
+.s-label { font-size: clamp(.55rem,2vw,.65rem); letter-spacing: .18em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-bottom: .6rem; text-align: center; }
+.s-row { display: flex; gap: 1px; background: #302c1e; border: 1px solid #42391f; border-radius: 6px; overflow: hidden; }
+.s-btn { flex: 1; padding: .85rem .5rem; text-align: center; cursor: pointer; background: #181610; border: none; color: #9a8860; font-family: 'IBM Plex Mono', monospace; font-size: clamp(.78rem,3vw,.92rem); font-weight: 400; letter-spacing: .05em; transition: all .15s; }
+.s-btn.sel { background: #c8881a; color: #0e0d0a; font-weight: 500; }
+.s-start { width: 100%; max-width: 360px; padding: .9rem; background: #c8881a; border: none; border-radius: 6px; font-family: 'Teko', sans-serif; font-size: 1.5rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #0e0d0a; cursor: pointer; }
+
+/* ── APP ── */
+#app { display: none; }
 .root { padding: 1.4rem 1.1rem 2.5rem; max-width: 680px; margin: 0 auto; }
 
-/* HEADER */
-.header { display: flex; align-items: center; justify-content: space-between; padding-bottom: 1rem; margin-bottom: 1.2rem; border-bottom: 1px solid #42391f; gap: .6rem; }
-.logo { font-family: 'Teko', sans-serif; font-size: clamp(2rem, 7vw, 2.6rem); font-weight: 600; letter-spacing: .06em; color: #f0c060; text-transform: uppercase; line-height: 1; }
+.header { display: flex; align-items: flex-start; justify-content: space-between; padding-bottom: 1rem; margin-bottom: 1.2rem; border-bottom: 1px solid #42391f; gap: .5rem; flex-wrap: wrap; }
+.logo { font-family: 'Teko', sans-serif; font-size: clamp(2rem,7vw,2.6rem); font-weight: 600; letter-spacing: .06em; color: #f0c060; text-transform: uppercase; line-height: 1; }
 .logo em { color: #c8881a; font-style: normal; }
-.sub { font-size: clamp(.6rem, 2vw, .68rem); letter-spacing: .16em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-top: .25rem; }
-.cam-btn { flex-shrink: 0; background: #181610; border: 1px solid #42391f; border-radius: 5px; padding: .65rem 1rem; color: #c8881a; font-family: 'IBM Plex Mono', monospace; font-size: clamp(.68rem, 2.2vw, .78rem); font-weight: 400; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .45rem; white-space: nowrap; }
+.sub { font-size: clamp(.6rem,2vw,.68rem); letter-spacing: .16em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-top: .25rem; }
+.hdr-right { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; justify-content: flex-end; }
+
+.hdr-pill { background: #181610; border: 1px solid #42391f; border-radius: 4px; display: flex; overflow: hidden; }
+.hdr-pill button { background: none; border: none; padding: .38rem .6rem; font-family: 'IBM Plex Mono', monospace; font-size: clamp(.55rem,1.8vw,.65rem); font-weight: 400; letter-spacing: .06em; text-transform: uppercase; color: #5a5030; cursor: pointer; border-right: 1px solid #42391f; white-space: nowrap; }
+.hdr-pill button:last-child { border-right: none; }
+.hdr-pill button.on { background: #302c1e; color: #c8881a; }
+
+.cam-btn { flex-shrink: 0; background: #181610; border: 1px solid #42391f; border-radius: 5px; padding: .6rem .9rem; color: #c8881a; font-family: 'IBM Plex Mono', monospace; font-size: clamp(.65rem,2.2vw,.75rem); font-weight: 400; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: .4rem; white-space: nowrap; }
 .cam-btn.on { background: #c8881a; color: #0e0d0a; border-color: #c8881a; }
 .dot { width: 9px; height: 9px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
-/* FORM GRID — toutes les cellules ont la même hauteur via align-items:stretch */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1px;
-  background: #302c1e;
-  border: 1px solid #42391f;
-  border-radius: 6px;
-  overflow: hidden;
-  margin-bottom: 1px;
-  /* force uniform row heights */
-  grid-auto-rows: 1fr;
-}
-
-.cell {
-  background: #181610;
-  padding: .9rem 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.lbl {
-  display: block;
-  font-size: clamp(.62rem, 2.2vw, .7rem);
-  letter-spacing: .13em;
-  text-transform: uppercase;
-  color: #5a5030;
-  font-weight: 300;
-  margin-bottom: .45rem;
-  line-height: 1.3;
-}
-
-.irow {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex: 1;
-}
-
-/* Number inputs and select — uniform height via padding only, no min-height */
-input[type=number], select {
-  flex: 1;
-  min-width: 0;
-  height: 48px;
-  background: #201e16;
-  border: 1px solid #42391f;
-  border-radius: 4px;
-  padding: 0 .65rem;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: clamp(1rem, 3.8vw, 1.15rem);
-  font-weight: 500;
-  color: #f0c060;
-  outline: none;
-  -moz-appearance: textfield;
-  /* prevent iOS zoom on focus */
-  touch-action: manipulation;
-}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: #302c1e; border: 1px solid #42391f; border-radius: 6px; overflow: hidden; margin-bottom: 1px; grid-auto-rows: 1fr; }
+.cell { background: #181610; padding: .9rem 1rem; display: flex; flex-direction: column; justify-content: space-between; }
+.lbl { display: block; font-size: clamp(.62rem,2.2vw,.7rem); letter-spacing: .13em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-bottom: .45rem; line-height: 1.3; }
+.irow { display: flex; align-items: center; gap: 6px; flex: 1; }
+input[type=number], select { flex: 1; min-width: 0; height: 48px; background: #201e16; border: 1px solid #42391f; border-radius: 4px; padding: 0 .65rem; font-family: 'IBM Plex Mono', monospace; font-size: clamp(1rem,3.8vw,1.15rem); font-weight: 500; color: #f0c060; outline: none; -moz-appearance: textfield; touch-action: manipulation; }
 input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; }
 input:focus, select:focus { border-color: #c8881a; }
 select option { background: #181610; color: #d8c898; }
-.unit { font-size: clamp(.7rem, 2.5vw, .8rem); color: #5a5030; font-weight: 300; white-space: nowrap; flex-shrink: 0; }
+.unit { font-size: clamp(.7rem,2.5vw,.8rem); color: #5a5030; font-weight: 300; white-space: nowrap; flex-shrink: 0; }
 
-/* RIDGELINE CELL — slider with visible track */
-.rl-cell {
-  background: #181610;
-  padding: .9rem 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+.rl-cell { background: #181610; padding: .9rem 1rem; display: flex; flex-direction: column; justify-content: space-between; }
+.rl-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: .5rem; }
+.rl-disp { font-size: clamp(.9rem,3.2vw,1.05rem); font-weight: 500; color: #f0c060; white-space: nowrap; }
+.rl-slider-row { display: flex; align-items: center; gap: 6px; }
+.rl-bound { font-size: clamp(.58rem,2vw,.65rem); color: #5a5030; white-space: nowrap; flex-shrink: 0; }
 
-.rl-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: .5rem;
-}
+input[type=range] { flex: 1; min-width: 0; -webkit-appearance: none; appearance: none; height: 6px; background: #201e16; border-radius: 3px; border: 1px solid #42391f; outline: none; cursor: pointer; display: block; margin: 0; padding: 0; }
+input[type=range]::-webkit-slider-runnable-track { height: 6px; background: #201e16; border-radius: 3px; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: #c8881a; border: 2px solid #0e0d0a; margin-top: -11px; cursor: pointer; }
+input[type=range]::-moz-range-track { height: 6px; background: #201e16; border-radius: 3px; border: 1px solid #42391f; }
+input[type=range]::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: #c8881a; border: 2px solid #0e0d0a; cursor: pointer; }
 
-.rl-disp {
-  font-size: clamp(.9rem, 3.2vw, 1.05rem);
-  font-weight: 500;
-  color: #f0c060;
-  white-space: nowrap;
-}
+.badge { font-size: clamp(.6rem,2vw,.68rem); letter-spacing: .08em; text-transform: uppercase; padding: .22rem .58rem; border-radius: 3px; white-space: nowrap; flex-shrink: 0; }
+.ok  { background: rgba(58,122,42,.2);  color: #6ac050; border: 1px solid rgba(58,122,42,.35); }
+.warn{ background: rgba(168,106,8,.2);  color: #c89028; border: 1px solid rgba(168,106,8,.35); }
+.bad { background: rgba(152,32,32,.25); color: #e05050; border: 1px solid rgba(152,32,32,.35); }
 
-.rl-slider-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.rl-bound {
-  font-size: clamp(.58rem, 2vw, .65rem);
-  color: #5a5030;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* Range slider — track fully visible, no min-height trick */
-input[type=range] {
-  flex: 1;
-  min-width: 0;
-  -webkit-appearance: none;
-  appearance: none;
-  height: 6px;
-  background: #201e16;
-  border-radius: 3px;
-  border: 1px solid #42391f;
-  outline: none;
-  cursor: pointer;
-  /* Proper vertical centering without inflating height */
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-input[type=range]::-webkit-slider-container { height: 6px; }
-input[type=range]::-webkit-slider-runnable-track {
-  height: 6px;
-  background: #201e16;
-  border-radius: 3px;
-}
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #c8881a;
-  border: 2px solid #0e0d0a;
-  margin-top: -11px; /* center thumb on 6px track */
-  cursor: pointer;
-}
-input[type=range]::-moz-range-track {
-  height: 6px;
-  background: #201e16;
-  border-radius: 3px;
-  border: 1px solid #42391f;
-}
-input[type=range]::-moz-range-thumb {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: #c8881a;
-  border: 2px solid #0e0d0a;
-  cursor: pointer;
-}
-
-.badge { font-size: clamp(.6rem, 2vw, .68rem); letter-spacing: .08em; text-transform: uppercase; padding: .22rem .58rem; border-radius: 3px; white-space: nowrap; flex-shrink: 0; }
-.ok   { background: rgba(58,122,42,.2);  color: #6ac050; border: 1px solid rgba(58,122,42,.35); }
-.warn { background: rgba(168,106,8,.2);  color: #c89028; border: 1px solid rgba(168,106,8,.35); }
-.bad  { background: rgba(152,32,32,.25); color: #e05050; border: 1px solid rgba(152,32,32,.35); }
-
-/* CAMERA */
 .viz { border: 1px solid #42391f; border-radius: 6px; overflow: hidden; margin-bottom: 1px; background: #080c14; position: relative; display: none; }
 .viz.on { display: block; }
 #vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 #cv-ar { position: absolute; inset: 0; width: 100%; height: 100%; }
 #cv-size { width: 100%; display: block; visibility: hidden; aspect-ratio: 16/9; }
-#ar-hint { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(8,10,18,.88); border-top: 1px solid #42391f; padding: .6rem 1rem; font-size: clamp(.62rem, 2.2vw, .72rem); color: #5a5030; letter-spacing: .08em; text-transform: uppercase; text-align: center; }
-#ar-hint span { color: #c8881a; }
+#ar-hint { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(8,10,18,.88); border-top: 1px solid #42391f; padding: .6rem 1rem; font-size: clamp(.62rem,2.2vw,.72rem); color: #5a5030; letter-spacing: .08em; text-transform: uppercase; text-align: center; }
+#ar-hint span { color: #6ac050; }
 
-/* RESULTS */
 .res { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: #302c1e; border: 1px solid #42391f; border-radius: 6px; overflow: hidden; margin-bottom: .9rem; }
 .rcard { background: #181610; padding: .85rem .9rem; border-left: 3px solid #c8881a; display: flex; flex-direction: column; justify-content: space-between; }
-.rlabel { font-size: clamp(.52rem, 1.7vw, .6rem); letter-spacing: .1em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-bottom: .2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.rval { font-family: 'Teko', sans-serif; font-size: clamp(1.4rem, 5vw, 1.75rem); font-weight: 500; color: #f0c060; line-height: 1; margin-bottom: .15rem; }
-.rsub { font-size: clamp(.48rem, 1.6vw, .58rem); color: #5a5030; font-weight: 300; }
+.rlabel { font-size: clamp(.52rem,1.7vw,.6rem); letter-spacing: .1em; text-transform: uppercase; color: #5a5030; font-weight: 300; margin-bottom: .2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rval { font-family: 'Teko', sans-serif; font-size: clamp(1.4rem,5vw,1.75rem); font-weight: 500; color: #f0c060; line-height: 1; margin-bottom: .15rem; }
+.rsub { font-size: clamp(.48rem,1.6vw,.58rem); color: #5a5030; font-weight: 300; }
 
-.tip { background: #181610; border: 1px solid #42391f; border-left: 3px solid #c8881a; border-radius: 6px; padding: .9rem 1rem; font-size: clamp(.75rem, 2.5vw, .85rem); color: #9a8860; line-height: 1.85; font-weight: 300; }
+.tip { background: #181610; border: 1px solid #42391f; border-left: 3px solid #c8881a; border-radius: 6px; padding: .9rem 1rem; font-size: clamp(.75rem,2.5vw,.85rem); color: #9a8860; line-height: 1.85; font-weight: 300; }
 .tip strong { color: #f0c060; font-weight: 500; }
 </style>
 </head>
 <body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div>
+    <div class="s-logo">Hang<em>Mak</em></div>
+    <div class="s-tagline" id="s-tagline">Hammock suspension calculator</div>
+  </div>
+  <div class="s-section">
+    <div class="s-label" id="s-lang-lbl">Language</div>
+    <div class="s-row">
+      <button class="s-btn sel" id="s-fr" onclick="setSplash('lang','fr')">Français</button>
+      <button class="s-btn"     id="s-en" onclick="setSplash('lang','en')">English</button>
+    </div>
+  </div>
+  <div class="s-section">
+    <div class="s-label" id="s-unit-lbl">Units</div>
+    <div class="s-row">
+      <button class="s-btn sel" id="s-metric"   onclick="setSplash('unit','metric')">Metric · m / kg</button>
+      <button class="s-btn"     id="s-imperial" onclick="setSplash('unit','imperial')">Imperial · ft / lb</button>
+    </div>
+  </div>
+  <button class="s-start" id="s-go" onclick="startApp()">Let's go →</button>
+</div>
+
+<!-- APP -->
+<div id="app">
 <div class="root">
 
 <div class="header">
   <div>
     <div class="logo">Hang<em>Mak</em></div>
-    <div class="sub">Calculateur de suspension</div>
+    <div class="sub" id="h-sub">—</div>
   </div>
-  <button class="cam-btn" id="btn-cam" onclick="toggleCam()">
-    <span class="dot"></span><span id="btn-txt">Activer caméra</span>
-  </button>
+  <div class="hdr-right">
+    <div class="hdr-pill">
+      <button id="h-fr" onclick="setLang('fr')">FR</button>
+      <button id="h-en" onclick="setLang('en')">EN</button>
+    </div>
+    <div class="hdr-pill">
+      <button id="h-m"  onclick="setUnit('metric')">m</button>
+      <button id="h-ft" onclick="setUnit('imperial')">ft</button>
+    </div>
+    <button class="cam-btn" id="btn-cam" onclick="toggleCam()">
+      <span class="dot"></span><span id="btn-txt">—</span>
+    </button>
+  </div>
 </div>
 
 <div class="form-grid">
-
-  <!-- Longueur hamac -->
   <div class="cell">
-    <span class="lbl">Longueur hamac</span>
+    <span class="lbl" id="lbl-hl">—</span>
     <div class="irow">
-      <input type="number" id="hl" value="3.35" min="1" max="15" step="0.05" oninput="calc()">
-      <span class="unit">m</span>
+      <input type="number" id="hl" value="3.35" min="0.5" max="15" step="0.05" oninput="calc()">
+      <span class="unit" id="u-hl">m</span>
     </div>
   </div>
-
-  <!-- Ridgeline — cellule spéciale avec layout vertical propre -->
   <div class="rl-cell">
     <div class="rl-top">
-      <span class="lbl" style="margin-bottom:0">Ridgeline <span id="pct-lbl">83</span>%</span>
+      <span class="lbl" style="margin-bottom:0"><span id="lbl-rl">Ridgeline</span> <span id="pct-lbl">83</span>%</span>
       <span class="rl-disp" id="rl-m">—</span>
     </div>
     <div class="rl-slider-row">
@@ -228,48 +154,38 @@ input[type=range]::-moz-range-thumb {
       <span class="rl-bound">85%</span>
     </div>
   </div>
-
-  <!-- Distance arbres -->
   <div class="cell">
-    <span class="lbl">Distance arbres</span>
+    <span class="lbl" id="lbl-dist">—</span>
     <div class="irow">
-      <input type="number" id="dist" value="6.0" min="1" max="30" step="0.1" oninput="calc()">
-      <span class="unit">m</span>
+      <input type="number" id="dist" value="6.0" min="1" max="100" step="0.1" oninput="calc()">
+      <span class="unit" id="u-dist">m</span>
     </div>
   </div>
-
-  <!-- Hauteur assise -->
   <div class="cell">
-    <span class="lbl">Hauteur d'assise</span>
+    <span class="lbl" id="lbl-sit">—</span>
     <div class="irow">
-      <input type="number" id="sit" value="60" min="10" max="120" step="1" oninput="calc()">
-      <span class="unit">cm</span>
+      <input type="number" id="sit" value="60" min="5" max="200" step="1" oninput="calc()">
+      <span class="unit" id="u-sit">cm</span>
     </div>
   </div>
-
-  <!-- Poids -->
   <div class="cell">
-    <span class="lbl">Poids total</span>
+    <span class="lbl" id="lbl-wt">—</span>
     <div class="irow">
-      <input type="number" id="wt" value="80" min="10" max="500" step="1" oninput="calc()">
-      <span class="unit">kg</span>
+      <input type="number" id="wt" value="80" min="5" max="500" step="1" oninput="calc()">
+      <span class="unit" id="u-wt">kg</span>
     </div>
   </div>
-
-  <!-- Largeur hamac (optionnel) -->
   <div class="cell">
-    <span class="lbl">Largeur hamac <span style="color:#3a3020;font-size:.85em">(optionnel)</span></span>
+    <span class="lbl" id="lbl-width">—</span>
     <div class="irow">
-      <input type="number" id="width" value="" min="0.5" max="3" step="0.05" placeholder="—" oninput="calc()">
-      <span class="unit">m</span>
+      <input type="number" id="width" value="" min="0.3" max="10" step="0.05" placeholder="—" oninput="calc()">
+      <span class="unit" id="u-width">m</span>
     </div>
   </div>
-
-  <!-- Angle — auto si largeur renseignée, sinon manuel -->
   <div class="cell" style="grid-column:span 2;">
-    <span class="lbl">Angle depuis le sol</span>
-    <div class="irow" style="flex-wrap:wrap; gap:6px;">
-      <select id="ang" onchange="calc()" style="flex:1; min-width:80px;">
+    <span class="lbl" id="lbl-ang">—</span>
+    <div class="irow" style="flex-wrap:wrap;gap:6px;">
+      <select id="ang" onchange="calc()" style="flex:1;min-width:80px;">
         <option value="15">15°</option>
         <option value="20">20°</option>
         <option value="25">25°</option>
@@ -277,280 +193,346 @@ input[type=range]::-moz-range-thumb {
         <option value="35">35°</option>
         <option value="45">45°</option>
       </select>
-      <span class="badge ok" id="badge">Optimal</span>
+      <span class="badge ok" id="badge">—</span>
       <span id="angle-hint" style="font-size:clamp(.52rem,1.8vw,.6rem);color:#5a5030;font-weight:300;width:100%;margin-top:.2rem;display:none;"></span>
     </div>
   </div>
-
 </div>
 
-<!-- Camera -->
 <div class="viz" id="viz">
   <canvas id="cv-size"></canvas>
   <video id="vid" autoplay playsinline muted></video>
   <canvas id="cv-ar"></canvas>
-  <div id="ar-hint">Alignez les sangles sur les <span>lignes vertes</span></div>
+  <div id="ar-hint">—</div>
 </div>
 
-<!-- Results -->
 <div class="res">
-  <div class="rcard">
-    <div class="rlabel">Ancrage</div>
-    <div class="rval" id="r-h">—</div>
-    <div class="rsub">sur l'arbre</div>
-  </div>
-  <div class="rcard">
-    <div class="rlabel">Sangle</div>
-    <div class="rval" id="r-s">—</div>
-    <div class="rsub">par côté</div>
-  </div>
-  <div class="rcard">
-    <div class="rlabel">Ridgeline</div>
-    <div class="rval" id="r-rl">—</div>
-    <div class="rsub" id="r-rl-s">83%</div>
-  </div>
+  <div class="rcard"><div class="rlabel" id="r-h-lbl">—</div><div class="rval" id="r-h">—</div><div class="rsub" id="r-h-sub">—</div></div>
+  <div class="rcard"><div class="rlabel" id="r-s-lbl">—</div><div class="rval" id="r-s">—</div><div class="rsub" id="r-s-sub">—</div></div>
+  <div class="rcard"><div class="rlabel">Ridgeline</div><div class="rval" id="r-rl">—</div><div class="rsub" id="r-rl-s">83%</div></div>
 </div>
-
 <div class="tip" id="tip">—</div>
+</div>
 </div>
 
 <script>
-const fmt = m => m >= 1 ? m.toFixed(2)+' m' : Math.round(m*100)+' cm';
+let LANG='fr', UNIT='metric';
 let camOn=false, mediaStream=null, rafAR=null;
-let G = { valid:false, hangPt:0, suspLen:0, rl:0, dist:6, angDeg:30, aRad:Math.PI/6, sitM:.6 };
+let G={valid:false,hangPt:0,suspLen:0,rl:0,dist:6,angDeg:30,aRad:Math.PI/6,sitM:.6};
 
-function drawAR() {
-  const viz = document.getElementById('viz');
-  const W = viz.clientWidth || 500;
-  const H = viz.clientHeight || Math.round(W*9/16);
-  const cv = document.getElementById('cv-ar');
+const T={
+  fr:{
+    sub:'Calculateur de suspension',
+    cam_on:'Activer caméra', cam_off:'Arrêter caméra',
+    lbl_hl:'Longueur hamac', lbl_rl:'Ridgeline',
+    lbl_dist:'Distance arbres', lbl_sit:"Hauteur d'assise",
+    lbl_wt:'Poids total', lbl_width:'Largeur hamac',
+    lbl_opt:'(optionnel)', lbl_ang:'Angle depuis le sol',
+    r_h:'Ancrage', r_h_sub:"sur l'arbre",
+    r_s:'Sangle', r_s_sub:'par côté',
+    rl_sfx:'hamac',
+    badge_opt:'Optimal', badge_ok:'Correct', badge_warn:'Détendu', badge_bad:'Danger',
+    ar_hint:'Alignez les sangles sur les <span>lignes vertes</span>',
+    err: rl=>`<strong>Erreur :</strong> ridgeline (${rl}) > distance arbres.`,
+    tip_danger: a=>`<strong>Danger :</strong> tension très élevée à ${a}°. Préférez 30°.`,
+    tip_ok: (h,s)=>`Sangles à <strong>${h}</strong> sur chaque arbre · <strong>${s}</strong> par sangle · dormez en diagonale.`,
+    tip_high: h=>`Ancrage à <strong>${h}</strong> — hauteur importante. Réduisez l'angle.`,
+    tip_def: (h,s)=>`Ancrage <strong>${h}</strong> · sangle <strong>${s}</strong> par côté.`,
+    tip_lay: a=>` Angle de couchage estimé : <strong>${a}</strong>.`,
+    hint: (sz,w,ang,lay)=>`Hamac <strong style="color:#c8881a">${sz}</strong> (${w}) · angle recommandé <strong style="color:#c8881a">${ang}°</strong> · angle de couchage <strong style="color:#c8881a">${lay}</strong>`,
+    sz:['Small','Medium','Large'],
+  },
+  en:{
+    sub:'Hammock suspension calculator',
+    cam_on:'Start camera', cam_off:'Stop camera',
+    lbl_hl:'Hammock length', lbl_rl:'Ridgeline',
+    lbl_dist:'Tree distance', lbl_sit:'Sit height',
+    lbl_wt:'Total weight', lbl_width:'Hammock width',
+    lbl_opt:'(optional)', lbl_ang:'Hang angle (from ground)',
+    r_h:'Hang height', r_h_sub:'on tree',
+    r_s:'Strap', r_s_sub:'per side',
+    rl_sfx:'hammock',
+    badge_opt:'Optimal', badge_ok:'Good', badge_warn:'Loose', badge_bad:'Danger',
+    ar_hint:'Align straps on the <span>green lines</span>',
+    err: rl=>`<strong>Error:</strong> ridgeline (${rl}) > tree distance.`,
+    tip_danger: a=>`<strong>Danger:</strong> very high tension at ${a}°. Use 30°.`,
+    tip_ok: (h,s)=>`Attach straps at <strong>${h}</strong> on each tree · <strong>${s}</strong> per strap · sleep diagonally.`,
+    tip_high: h=>`Hang point at <strong>${h}</strong> — high anchor. Reduce angle.`,
+    tip_def: (h,s)=>`Hang height <strong>${h}</strong> · strap <strong>${s}</strong> per side.`,
+    tip_lay: a=>` Estimated lay angle: <strong>${a}</strong>.`,
+    hint: (sz,w,ang,lay)=>`${sz} hammock (${w}) · recommended angle <strong style="color:#c8881a">${ang}°</strong> · lay angle <strong style="color:#c8881a">${lay}</strong>`,
+    sz:['Small','Medium','Large'],
+  }
+};
+
+// ── Conversion helpers ──
+function toM(v,type){
+  if(UNIT==='metric') return type==='small'?v/100:v;
+  if(type==='wt') return v*0.453592;
+  if(type==='small') return v*0.0254;
+  return v*0.3048;
+}
+function fmtLen(m){
+  if(UNIT==='metric') return m>=1?m.toFixed(2)+' m':Math.round(m*100)+' cm';
+  const ti=m/0.0254, ft=Math.floor(ti/12), inch=Math.round(ti%12);
+  return inch>0?`${ft}' ${inch}"`:`${ft}'`;
+}
+function fmtW(m){
+  return UNIT==='metric'?m.toFixed(2)+' m':(m/0.3048).toFixed(1)+' ft';
+}
+function uLabel(t){
+  if(UNIT==='metric') return t==='small'?'cm':t==='wt'?'kg':'m';
+  return t==='small'?'in':t==='wt'?'lb':'ft';
+}
+
+// ── Splash ──
+function setSplash(key,val){
+  if(key==='lang'){
+    LANG=val;
+    document.getElementById('s-fr').className=val==='fr'?'s-btn sel':'s-btn';
+    document.getElementById('s-en').className=val==='en'?'s-btn sel':'s-btn';
+    const isFr=val==='fr';
+    document.getElementById('s-tagline').textContent=isFr?'Calculateur de suspension':'Hammock suspension calculator';
+    document.getElementById('s-lang-lbl').textContent=isFr?'Langue':'Language';
+    document.getElementById('s-unit-lbl').textContent=isFr?'Unités':'Units';
+    document.getElementById('s-go').textContent=isFr?'Allons-y →':"Let's go →";
+    document.getElementById('s-metric').textContent=isFr?'Métrique · m / kg':'Metric · m / kg';
+    document.getElementById('s-imperial').textContent=isFr?'Impérial · ft / lb':'Imperial · ft / lb';
+  }
+  if(key==='unit'){
+    UNIT=val;
+    document.getElementById('s-metric').className=val==='metric'?'s-btn sel':'s-btn';
+    document.getElementById('s-imperial').className=val==='imperial'?'s-btn sel':'s-btn';
+  }
+}
+
+function startApp(){
+  document.getElementById('splash').style.display='none';
+  document.getElementById('app').style.display='block';
+  applyLang(); applyUnit(); calc();
+}
+
+// ── Lang ──
+function setLang(l){
+  LANG=l;
+  document.getElementById('h-fr').className=l==='fr'?'on':'';
+  document.getElementById('h-en').className=l==='en'?'on':'';
+  applyLang(); calc();
+}
+function applyLang(){
+  const t=T[LANG];
+  document.getElementById('h-sub').textContent=t.sub;
+  document.getElementById('btn-txt').textContent=camOn?t.cam_off:t.cam_on;
+  document.getElementById('lbl-hl').textContent=t.lbl_hl;
+  document.getElementById('lbl-rl').textContent=t.lbl_rl;
+  document.getElementById('lbl-dist').textContent=t.lbl_dist;
+  document.getElementById('lbl-sit').textContent=t.lbl_sit;
+  document.getElementById('lbl-wt').textContent=t.lbl_wt;
+  document.getElementById('lbl-width').innerHTML=t.lbl_width+' <span style="color:#3a3020;font-size:.85em">'+t.lbl_opt+'</span>';
+  document.getElementById('lbl-ang').textContent=t.lbl_ang;
+  document.getElementById('r-h-lbl').textContent=t.r_h;
+  document.getElementById('r-h-sub').textContent=t.r_h_sub;
+  document.getElementById('r-s-lbl').textContent=t.r_s;
+  document.getElementById('r-s-sub').textContent=t.r_s_sub;
+  document.getElementById('ar-hint').innerHTML=t.ar_hint;
+  document.documentElement.lang=LANG;
+}
+
+// ── Unit ──
+function setUnit(u){
+  UNIT=u;
+  document.getElementById('h-m').className=u==='metric'?'on':'';
+  document.getElementById('h-ft').className=u==='imperial'?'on':'';
+  applyUnit(); calc();
+}
+function applyUnit(){
+  document.getElementById('u-hl').textContent=uLabel('len');
+  document.getElementById('u-dist').textContent=uLabel('len');
+  document.getElementById('u-sit').textContent=uLabel('small');
+  document.getElementById('u-wt').textContent=uLabel('wt');
+  document.getElementById('u-width').textContent=uLabel('len');
+  // Default values
+  const D={metric:{hl:3.35,dist:6.0,sit:60,wt:80},imperial:{hl:11,dist:20,sit:24,wt:176}};
+  const d=D[UNIT];
+  document.getElementById('hl').value=d.hl;
+  document.getElementById('dist').value=d.dist;
+  document.getElementById('sit').value=d.sit;
+  document.getElementById('wt').value=d.wt;
+  document.getElementById('width').value='';
+  // Steps
+  document.getElementById('hl').step=UNIT==='metric'?'0.05':'0.25';
+  document.getElementById('dist').step=UNIT==='metric'?'0.1':'0.5';
+  document.getElementById('sit').step='1';
+  document.getElementById('wt').step=UNIT==='metric'?'1':'2';
+  document.getElementById('width').step=UNIT==='metric'?'0.05':'0.1';
+}
+
+// ── AR ──
+function drawAR(){
+  const viz=document.getElementById('viz');
+  const W=viz.clientWidth||500, H=viz.clientHeight||Math.round(W*9/16);
+  const cv=document.getElementById('cv-ar');
   cv.width=W; cv.height=H;
-  const c = cv.getContext('2d');
+  const c=cv.getContext('2d');
   c.clearRect(0,0,W,H);
-  const { aRad, angDeg, rl, dist, suspLen, hangPt, valid } = G;
-  if (!valid) return;
+  const{aRad,rl,dist,suspLen,hangPt,valid}=G;
+  if(!valid) return;
 
-  const fs = Math.max(13, Math.round(H*.055));
-  const labelH = fs + 8;   // height of a label pill
+  const fs=Math.max(13,Math.round(H*.055)), lH=fs+8;
+  const pT=lH+20,pB=H*.18,pL=W*.14,pR=W*.06;
+  const plotW=W-pL-pR;
+  const rlPx=(rl/dist)*plotW, sHPx=(plotW-rlPx)/2;
+  const aLx=pL,aRx=pL+plotW,hLx=pL+sHPx,hRx=pL+plotW-sHPx;
+  const dY=sHPx*Math.tan(aRad);
+  const avH=H-pT-pB, sf=0.12, scH=dY+rlPx*sf, sc=Math.min(1,avH/scH);
+  const dYp=dY*sc, sagP=rlPx*sf*sc;
+  const aY=H/2-(dYp+sagP)/2, hY=aY+dYp, cpy=hY+sagP*2;
 
-  // ── Margins: top for anchor labels, bottom for hamac sag, sides for height label
-  const padTop    = labelH + 20;      // room above anchors for sangle label
-  const padBot    = H * .18;          // room below hamac ends for sag + hint bar
-  const padLeft   = W * .14;          // room left for height dimension
-  const padRight  = W * .06;
-
-  // ── Horizontal layout based on rl/dist ratio ──
-  const plotW   = W - padLeft - padRight;
-  const rlRatio = rl / dist;
-  const rlPx    = rlRatio * plotW;
-  const sangHPx = (plotW - rlPx) / 2;
-
-  const anchLx = padLeft;
-  const anchRx = padLeft + plotW;
-  const hamLx  = padLeft + sangHPx;
-  const hamRx  = padLeft + plotW - sangHPx;
-
-  // ── Vertical layout: anchors at top area, hamac ends in middle ──
-  // We want the scene centered: anchors near top, hamac center near middle
-  const dY = sangHPx * Math.tan(aRad);   // vertical rise of sangle
-
-  // Place hamac ends so the whole scene fits with margins
-  const availH  = H - padTop - padBot;
-  // Scene height = dY (sangle rise) + sag
-  const sagFrac = 0.12;
-  const sceneH  = dY + rlPx * sagFrac;
-  const scale   = Math.min(1, availH / sceneH);
-
-  const dYpx    = dY * scale;
-  const sagPx   = rlPx * sagFrac * scale;
-
-  // Center the scene: midpoint of (anchY + hamBotY) at H/2
-  const sceneHpx = dYpx + sagPx;
-  const topY    = H/2 - sceneHpx/2;      // Y of anchors
-  const anchY   = topY;
-  const hamY    = topY + dYpx;           // Y of hamac ends
-  const hamBotY = hamY + sagPx * 2;      // lowest point of sag
-
-  // ── Draw straps ──
-  function strap(ax,ay,ex,ey) {
+  function strap(ax,ay,ex,ey){
     c.strokeStyle='rgba(80,200,60,.13)';c.lineWidth=22;c.lineCap='round';c.setLineDash([]);
     c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
     c.strokeStyle='rgba(70,180,50,.88)';c.lineWidth=4;
     c.beginPath();c.moveTo(ax,ay);c.lineTo(ex,ey);c.stroke();
-    const dx=ex-ax,dy2=ey-ay,len=Math.sqrt(dx*dx+dy2*dy2);
-    const nx=-dy2/len*16,ny=dx/len*16;
+    const dx=ex-ax,dy=ey-ay,l=Math.sqrt(dx*dx+dy*dy),nx=-dy/l*16,ny=dx/l*16;
     c.strokeStyle='rgba(70,180,50,.18)';c.lineWidth=1.2;c.setLineDash([5,6]);
     c.beginPath();c.moveTo(ax+nx,ay+ny);c.lineTo(ex+nx,ey+ny);c.stroke();
     c.beginPath();c.moveTo(ax-nx,ay-ny);c.lineTo(ex-nx,ey-ny);c.stroke();
     c.setLineDash([]);
   }
-  strap(anchLx,anchY,hamLx,hamY);
-  strap(anchRx,anchY,hamRx,hamY);
+  strap(aLx,aY,hLx,hY); strap(aRx,aY,hRx,hY);
 
-  // ── Anchor rings ──
   c.fillStyle='rgba(10,6,2,.85)';c.strokeStyle='rgba(70,180,50,.9)';c.lineWidth=2.5;
-  [anchLx,anchRx].forEach(x=>{c.beginPath();c.arc(x,anchY,9,0,Math.PI*2);c.fill();c.stroke();});
+  [aLx,aRx].forEach(x=>{c.beginPath();c.arc(x,aY,9,0,Math.PI*2);c.fill();c.stroke();});
 
-  // ── Hammock ──
-  const cx1l=hamLx+(hamRx-hamLx)*.35, cx2r=hamRx-(hamRx-hamLx)*.35;
-  const cpy=hamY+sagPx*2;
+  const cx1=hLx+(hRx-hLx)*.35,cx2=hRx-(hRx-hLx)*.35;
   c.strokeStyle='rgba(28,18,4,.8)';c.lineWidth=13;c.lineCap='round';
-  c.beginPath();c.moveTo(hamLx,hamY);c.bezierCurveTo(cx1l,cpy,cx2r,cpy,hamRx,hamY);c.stroke();
+  c.beginPath();c.moveTo(hLx,hY);c.bezierCurveTo(cx1,cpy,cx2,cpy,hRx,hY);c.stroke();
   c.fillStyle='rgba(55,38,10,.48)';
-  c.beginPath();c.moveTo(hamLx,hamY-3);c.lineTo(hamRx,hamY-3);
-  c.bezierCurveTo(cx2r,cpy,cx1l,cpy,hamLx,hamY-3);c.fill();
+  c.beginPath();c.moveTo(hLx,hY-3);c.lineTo(hRx,hY-3);
+  c.bezierCurveTo(cx2,cpy,cx1,cpy,hLx,hY-3);c.fill();
   c.strokeStyle='rgba(200,158,55,.85)';c.lineWidth=4.5;
-  c.beginPath();c.moveTo(hamLx,hamY);c.bezierCurveTo(cx1l,cpy,cx2r,cpy,hamRx,hamY);c.stroke();
+  c.beginPath();c.moveTo(hLx,hY);c.bezierCurveTo(cx1,cpy,cx2,cpy,hRx,hY);c.stroke();
 
-  // ── Ridgeline dashed ──
   c.setLineDash([10,7]);c.strokeStyle='rgba(100,150,215,.7)';c.lineWidth=2.2;
-  c.beginPath();c.moveTo(hamLx,hamY);c.lineTo(hamRx,hamY);c.stroke();
-  c.setLineDash([]);
+  c.beginPath();c.moveTo(hLx,hY);c.lineTo(hRx,hY);c.stroke();c.setLineDash([]);
 
-  // ── Labels: placed ABOVE anchors (not on straps) ──
-  function pill(txt, cx, cy, color) {
-    const tw = c.measureText(txt).width;
-    const pw = tw + 16, ph = labelH;
-    c.fillStyle='rgba(6,8,14,.88)';
-    c.beginPath();c.roundRect(cx-pw/2,cy-ph/2,pw,ph,4);c.fill();
-    c.fillStyle=color;c.textAlign='center';
-    c.fillText(txt, cx, cy+fs*.3);
+  c.font=`600 ${fs}px 'Teko',sans-serif`;
+  function pill(txt,cx,cy,col){
+    const tw=c.measureText(txt).width,pw=tw+16,ph=lH;
+    c.fillStyle='rgba(6,8,14,.88)';c.beginPath();c.roundRect(cx-pw/2,cy-ph/2,pw,ph,4);c.fill();
+    c.fillStyle=col;c.textAlign='center';c.fillText(txt,cx,cy+fs*.3);
   }
 
-  c.font=`600 ${fs}px 'Teko',sans-serif`;
+  pill(fmtLen(suspLen),(aLx+hLx)/2,aY-lH/2-6,'rgba(80,200,80,.95)');
+  pill(fmtLen(suspLen),(aRx+hRx)/2,aY-lH/2-6,'rgba(80,200,80,.95)');
+  pill(fmtLen(rl),W/2,hY-lH/2-8,'rgba(100,150,215,.95)');
 
-  // Sangle labels — above each anchor, on strap midpoint, GREEN
-  const sLabelY = anchY - labelH/2 - 6;
-  const lMidX = (anchLx + hamLx) / 2;
-  const rMidX = (anchRx + hamRx) / 2;
-  pill(suspLen.toFixed(2)+'m', lMidX, sLabelY, 'rgba(80,200,80,.95)');
-  pill(suspLen.toFixed(2)+'m', rMidX, sLabelY, 'rgba(80,200,80,.95)');
-
-  // Ridgeline label — ABOVE the ridgeline, centered, BLUE, same Teko font
-  pill(rl.toFixed(2)+' m', W/2, hamY - labelH/2 - 8, 'rgba(100,150,215,.95)');
-
-  // Height indicator — vertical orange line from left anchor down to bottom of canvas
-  const floorY = H - 38; // just above the hint bar
-  c.strokeStyle='rgba(200,136,26,.88)'; c.lineWidth=4; c.lineCap='round'; c.setLineDash([]);
-  c.beginPath(); c.moveTo(anchLx, anchY+9); c.lineTo(anchLx, floorY); c.stroke();
-  // Horizontal tick at bottom (the floor mark)
-  c.beginPath(); c.moveTo(anchLx-14, floorY); c.lineTo(anchLx+14, floorY); c.stroke();
-  // Small tick at anchor level
-  c.lineWidth=2;
-  c.beginPath(); c.moveTo(anchLx-8, anchY+9); c.lineTo(anchLx+8, anchY+9); c.stroke();
-  // Label — same pill style as others, Teko font, orange, at bottom-right of line
-  const htxt = hangPt.toFixed(2)+'m';
-  c.font=`600 ${fs}px 'Teko',sans-serif`;
-  const htw = c.measureText(htxt).width;
-  const hpw = htw+16, hph = labelH;
-  const hpx = anchLx+14, hpy = floorY - hph/2 - 2;
-  c.fillStyle='rgba(6,8,14,.88)';
-  c.beginPath(); c.roundRect(hpx, hpy-hph/2, hpw, hph, 4); c.fill();
-  c.fillStyle='rgba(200,136,26,.95)'; c.textAlign='left';
-  c.fillText(htxt, hpx+8, hpy+fs*.3);
+  const fY=H-38;
+  c.strokeStyle='rgba(200,136,26,.88)';c.lineWidth=4;c.lineCap='round';c.setLineDash([]);
+  c.beginPath();c.moveTo(aLx,aY+9);c.lineTo(aLx,fY);c.stroke();
+  c.beginPath();c.moveTo(aLx-14,fY);c.lineTo(aLx+14,fY);c.stroke();
+  c.lineWidth=2;c.beginPath();c.moveTo(aLx-8,aY+9);c.lineTo(aLx+8,aY+9);c.stroke();
+  const ht=fmtLen(hangPt),htw=c.measureText(ht).width,hpw=htw+16,hpy=fY-lH/2-2;
+  c.fillStyle='rgba(6,8,14,.88)';c.beginPath();c.roundRect(aLx+14,hpy-lH/2,hpw,lH,4);c.fill();
+  c.fillStyle='rgba(200,136,26,.95)';c.textAlign='left';c.fillText(ht,aLx+22,hpy+fs*.3);
 }
 
-async function toggleCam() {
-  if (!camOn) {
-    try {
+// ── Camera ──
+async function toggleCam(){
+  const t=T[LANG];
+  if(!camOn){
+    try{
       mediaStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'},width:{ideal:1920}},audio:false});
       const vid=document.getElementById('vid');
       vid.srcObject=mediaStream; await vid.play();
       document.getElementById('viz').classList.add('on');
       document.getElementById('btn-cam').classList.add('on');
-      document.getElementById('btn-txt').textContent='Arrêter caméra';
+      document.getElementById('btn-txt').textContent=t.cam_off;
       camOn=true;
       (function loop(){drawAR();rafAR=requestAnimationFrame(loop);})();
-    } catch(e) { alert('Caméra non disponible — '+e.message); }
-  } else {
+    }catch(e){alert((LANG==='fr'?'Caméra non disponible':'Camera unavailable')+' — '+e.message);}
+  }else{
     if(rafAR){cancelAnimationFrame(rafAR);rafAR=null;}
-    if(mediaStream){mediaStream.getTracks().forEach(t=>t.stop());mediaStream=null;}
+    if(mediaStream){mediaStream.getTracks().forEach(tr=>tr.stop());mediaStream=null;}
     document.getElementById('viz').classList.remove('on');
     document.getElementById('btn-cam').classList.remove('on');
-    document.getElementById('btn-txt').textContent='Activer caméra';
+    document.getElementById('btn-txt').textContent=t.cam_on;
     camOn=false;
   }
 }
 
-function calc() {
-  const hl   = parseFloat(document.getElementById('hl').value)||3.35;
-  const dist = parseFloat(document.getElementById('dist').value)||6;
-  const sit  = (parseFloat(document.getElementById('sit').value)||60)/100;
-  const pct  = parseFloat(document.getElementById('pct').value)||83;
-  const wRaw = document.getElementById('width').value;
-  const width = wRaw !== '' ? parseFloat(wRaw) : null;
+// ── Calc ──
+function calc(){
+  const t=T[LANG];
+  const hlR  =parseFloat(document.getElementById('hl').value)||(UNIT==='metric'?3.35:11);
+  const distR=parseFloat(document.getElementById('dist').value)||(UNIT==='metric'?6:20);
+  const sitR =parseFloat(document.getElementById('sit').value)||(UNIT==='metric'?60:24);
+  const pct  =parseFloat(document.getElementById('pct').value)||83;
+  const wRaw =document.getElementById('width').value;
+  const wR   =wRaw!==''?parseFloat(wRaw):null;
 
-  // ── Auto-recommend angle from width if provided ──
-  const angSel = document.getElementById('ang');
-  const hintEl = document.getElementById('angle-hint');
-  let ang = parseFloat(angSel.value) || 30;
-  let layAngle = null;
-  let sizeLabel = null;
-
-  if (width !== null && !isNaN(width)) {
-    if (width <= 1.3) {
-      // Small — recommend 15-20°
-      ang = 20;
-      sizeLabel = 'Small';
-      layAngle = '5–15°';
-    } else if (width <= 1.6) {
-      // Medium — recommend 30°
-      ang = 30;
-      sizeLabel = 'Medium';
-      layAngle = '~15°';
-    } else {
-      // Large — recommend 35°
-      ang = 35;
-      sizeLabel = 'Large';
-      layAngle = '20–40°';
-    }
-    // Set the select to match
-    angSel.value = ang;
-    hintEl.style.display = 'block';
-    hintEl.innerHTML = `Hamac <strong style="color:#c8881a">${sizeLabel}</strong> (${width.toFixed(2)}m) · angle recommandé <strong style="color:#c8881a">${ang}°</strong> · angle de couchage <strong style="color:#c8881a">${layAngle}</strong>`;
-  } else {
-    hintEl.style.display = 'none';
-    ang = parseFloat(angSel.value) || 30;
-  }
-
-  const rl   = hl*(pct/100);
-  const aRad = ang*Math.PI/180;
-  const valid = dist>rl+0.05;
+  const hlM   =toM(hlR,'len');
+  const distM =toM(distR,'len');
+  const sitM  =toM(sitR,'small');
+  const widthM=wR!==null?toM(wR,'len'):null;
+  const rl    =hlM*(pct/100);
 
   document.getElementById('pct-lbl').textContent=pct;
-  document.getElementById('rl-m').textContent=rl.toFixed(2)+' m';
-  document.getElementById('r-rl').textContent=fmt(rl);
-  document.getElementById('r-rl-s').textContent=pct+'% hamac';
+  document.getElementById('rl-m').textContent=fmtLen(rl);
+  document.getElementById('r-rl').textContent=fmtLen(rl);
+  document.getElementById('r-rl-s').textContent=pct+'% '+t.rl_sfx;
+
+  const angSel=document.getElementById('ang');
+  const hintEl=document.getElementById('angle-hint');
+  let ang=parseFloat(angSel.value)||30;
+  let layAngle=null,sz=null;
+
+  if(widthM!==null&&!isNaN(widthM)){
+    if(widthM<=1.3)      {ang=20;sz=t.sz[0];layAngle='5–15°';}
+    else if(widthM<=1.6) {ang=30;sz=t.sz[1];layAngle='~15°';}
+    else                 {ang=35;sz=t.sz[2];layAngle='20–40°';}
+    angSel.value=ang;
+    hintEl.style.display='block';
+    hintEl.innerHTML=t.hint(sz,fmtW(widthM),ang,layAngle);
+  }else{
+    hintEl.style.display='none';
+    ang=parseFloat(angSel.value)||30;
+  }
+
+  const aRad=ang*Math.PI/180;
+  const valid=distM>rl+0.05;
 
   if(!valid){
     document.getElementById('r-h').textContent='—';
     document.getElementById('r-s').textContent='—';
-    document.getElementById('tip').innerHTML=`<strong>Erreur :</strong> ridgeline (${rl.toFixed(2)} m) > distance arbres.`;
-    G={...G,valid,dist,rl,angDeg:ang,aRad,sitM:sit}; return;
+    document.getElementById('tip').innerHTML=t.err(fmtLen(rl));
+    G={...G,valid,dist:distM,rl,angDeg:ang,aRad,sitM}; return;
   }
-  const hangPt=sit+(dist/2)*Math.tan(aRad);
-  const suspLen=((dist-rl)/2)/Math.cos(aRad);
-  G={valid,hangPt,suspLen,rl,dist,angDeg:ang,aRad,sitM:sit};
 
-  document.getElementById('r-h').textContent=fmt(hangPt);
-  document.getElementById('r-s').textContent=fmt(suspLen);
+  const hangPt =sitM+(distM/2)*Math.tan(aRad);
+  const suspLen=((distM-rl)/2)/Math.cos(aRad);
+  G={valid,hangPt,suspLen,rl,dist:distM,angDeg:ang,aRad,sitM};
+
+  document.getElementById('r-h').textContent=fmtLen(hangPt);
+  document.getElementById('r-s').textContent=fmtLen(suspLen);
 
   const b=document.getElementById('badge');
-  if(ang===30){b.textContent='Optimal';b.className='badge ok';}
-  else if(ang<=20){b.textContent='Danger';b.className='badge bad';}
-  else if(ang>=40){b.textContent='Détendu';b.className='badge warn';}
-  else{b.textContent='Correct';b.className='badge ok';}
+  if(ang===30)    {b.textContent=t.badge_opt;b.className='badge ok';}
+  else if(ang<=20){b.textContent=t.badge_bad;b.className='badge bad';}
+  else if(ang>=40){b.textContent=t.badge_warn;b.className='badge warn';}
+  else            {b.textContent=t.badge_ok;b.className='badge ok';}
 
+  const hF=fmtLen(hangPt),sF=fmtLen(suspLen);
   let tip='';
-  if(ang<=20) tip=`<strong>Danger :</strong> tension très élevée à ${ang}°. Préférez 30°.`;
-  else if(ang===30) tip=`Sangles à <strong>${fmt(hangPt)}</strong> sur chaque arbre · <strong>${fmt(suspLen)}</strong> par sangle · dormez en diagonale.`;
-  else if(hangPt>3) tip=`Ancrage à <strong>${fmt(hangPt)}</strong> — hauteur importante. Réduisez l'angle.`;
-  else tip=`Ancrage <strong>${fmt(hangPt)}</strong> · sangle <strong>${fmt(suspLen)}</strong> par côté.`;
-  if(layAngle) tip += ` Angle de couchage estimé : <strong>${layAngle}</strong>.`;
+  if(ang<=20)      tip=t.tip_danger(ang);
+  else if(ang===30)tip=t.tip_ok(hF,sF);
+  else if(hangPt>3)tip=t.tip_high(hF);
+  else             tip=t.tip_def(hF,sF);
+  if(layAngle)     tip+=t.tip_lay(layAngle);
   document.getElementById('tip').innerHTML=tip;
 }
 
-calc();
+window.addEventListener('resize',()=>{if(!camOn)calc();});
 </script>
 </body>
 </html>
